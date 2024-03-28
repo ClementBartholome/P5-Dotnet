@@ -1,0 +1,109 @@
+@model IEnumerable<Express_Voitures.Models.Voiture>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Marque)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Annee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateAchat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrixAchat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Disponible)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Marque.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Annee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAchat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrixAchat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disponible)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- Bouton pour ouvrir la modale -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBrandModal">
+  Ajouter une marque
+</button>
+
+<!-- Modale pour ajouter une marque -->
+<div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBrandModalLabel">Ajouter une marque</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addBrandForm">
+          <div class="form-group">
+            <label for="brandName" class="col-form-label">Nom de la marque:</label>
+            <input type="text" class="form-control" id="brandName">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" id="addBrandButton">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script>
+        // Lorsque l'utilisateur clique sur le bouton "Ajouter" dans la modale
+        $('#addBrandButton').click(function() {
+          // Récupérer le nom de la marque du formulaire
+          var brandName = $('#brandName').val();
+        
+          // Ajouter la nouvelle marque à la liste des options dans le formulaire d'ajout de Voiture
+          $('#brandSelect').append(new Option(brandName, brandName));
+        
+          // Fermer la modale
+          $('#addBrandModal').modal('hide');
+        });
+    </script>
+}
