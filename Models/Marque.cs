@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-        public ICollection<Modele> Modeles { get; set; }
-        public ICollection<Voiture> Voitures { get; set; }
+        public ICollection<Modele>? Modeles { get; set; }
+        public ICollection<Voiture>? Voitures { get; set; }
     }
 }

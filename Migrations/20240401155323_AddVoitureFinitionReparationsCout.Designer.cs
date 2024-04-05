@@ -4,6 +4,7 @@ using Express_Voitures.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Express_Voitures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240401155323_AddVoitureFinitionReparationsCout")]
+    partial class AddVoitureFinitionReparationsCout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,10 +123,6 @@ namespace Express_Voitures.Migrations
                     b.Property<int>("Annee")
                         .HasColumnType("int");
 
-                    b.Property<string>("CodeVin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("CoutReparations")
                         .HasColumnType("decimal(18,2)");
 
@@ -200,11 +199,13 @@ namespace Express_Voitures.Migrations
 
             modelBuilder.Entity("Express_Voitures.Models.Finition", b =>
                 {
-                    b.HasOne("Express_Voitures.Models.Modele", null)
+                    b.HasOne("Express_Voitures.Models.Modele", "Modele")
                         .WithMany("Finitions")
                         .HasForeignKey("ModeleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Modele");
                 });
 
             modelBuilder.Entity("Express_Voitures.Models.Modele", b =>

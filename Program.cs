@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Express_Voitures.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 
 var app = builder.Build();
 

@@ -4,6 +4,7 @@ using Express_Voitures.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Express_Voitures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240331092527_AddVoitureColonneModele")]
+    partial class AddVoitureColonneModele
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,21 +123,11 @@ namespace Express_Voitures.Migrations
                     b.Property<int>("Annee")
                         .HasColumnType("int");
 
-                    b.Property<string>("CodeVin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("CoutReparations")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime>("DateAchat")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
-
-                    b.Property<int>("FinitionId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MarqueId")
                         .HasColumnType("int");
@@ -145,13 +138,7 @@ namespace Express_Voitures.Migrations
                     b.Property<decimal>("PrixAchat")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Reparations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("FinitionId");
 
                     b.HasIndex("MarqueId");
 
@@ -200,11 +187,13 @@ namespace Express_Voitures.Migrations
 
             modelBuilder.Entity("Express_Voitures.Models.Finition", b =>
                 {
-                    b.HasOne("Express_Voitures.Models.Modele", null)
+                    b.HasOne("Express_Voitures.Models.Modele", "Modele")
                         .WithMany("Finitions")
                         .HasForeignKey("ModeleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Modele");
                 });
 
             modelBuilder.Entity("Express_Voitures.Models.Modele", b =>
@@ -220,12 +209,6 @@ namespace Express_Voitures.Migrations
 
             modelBuilder.Entity("Express_Voitures.Models.Voiture", b =>
                 {
-                    b.HasOne("Express_Voitures.Models.Finition", "Finition")
-                        .WithMany()
-                        .HasForeignKey("FinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Express_Voitures.Models.Marque", "Marque")
                         .WithMany("Voitures")
                         .HasForeignKey("MarqueId")
@@ -237,8 +220,6 @@ namespace Express_Voitures.Migrations
                         .HasForeignKey("ModeleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Finition");
 
                     b.Navigation("Marque");
 
