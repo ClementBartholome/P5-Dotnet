@@ -1,0 +1,59 @@
+@model IEnumerable<Express_Voitures.ViewModels.AnnonceViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create">Ajouter une annonce</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Nom de la voiture
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VoitureAnnee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VoiturePrix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhotoFilePath)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoitureMarque)
+                @Html.DisplayFor(modelItem => item.VoitureModele)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoitureAnnee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoiturePrixFormatted)€
+            </td>
+            <td>
+                <img src="@item.PhotoFilePath" alt="Image de l'annonce" />
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
