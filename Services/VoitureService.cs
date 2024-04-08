@@ -93,6 +93,7 @@ public class VoitureService
                     Voiture = voiture,
                     DateDisponibilite = DateTime.Now,
                     Vendu = voitureViewModel.Vendu,
+                    PrixVente = Convert.ToDecimal(voitureViewModel.PrixVente)
                 };
 
                 _context.VoitureVente.Add(voitureVente);
@@ -102,6 +103,7 @@ public class VoitureService
                 voitureVente.DateDisponibilite = (DateTime)voitureViewModel.DateDisponibilite!;
                 voitureVente.Vendu = voitureViewModel.Vendu;
                 voitureVente.DateVente = voitureViewModel.DateVente;
+                voitureVente.PrixVente = Convert.ToDecimal(voitureViewModel.PrixVente);
 
                 _context.VoitureVente.Update(voitureVente);
             }

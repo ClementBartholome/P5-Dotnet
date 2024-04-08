@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Express_Voitures.Models;
 using Express_Voitures.Services;
 using Express_Voitures.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Express_Voitures.Controllers
 {
@@ -46,6 +47,7 @@ namespace Express_Voitures.Controllers
         }
 
         // GET: Voiture/Create
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create()
         {
             await FillViewBag();
@@ -55,6 +57,7 @@ namespace Express_Voitures.Controllers
         // POST: Voiture/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create(VoitureViewModel voitureViewModel)
         {
             if (ModelState.IsValid)
@@ -75,6 +78,7 @@ namespace Express_Voitures.Controllers
         }
 
         // GET: Voiture/Edit/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var voiture = await _voitureService.GetVoitureById(id);
@@ -121,20 +125,13 @@ namespace Express_Voitures.Controllers
         // POST: Voiture/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int id, VoitureViewModel voitureViewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var isVinUnique = await _voitureService.IsVinUnique(voitureViewModel.CodeVin, id);
-                    
-                    if (!isVinUnique)
-                    {
-                        ModelState.AddModelError("CodeVin", "Ce Code VIN est déjà utilisé");
-                        return View(voitureViewModel);
-                    }
-                    
                     var voiture = await _voitureService.GetVoitureById(id);
                     _voitureService.CreateOrUpdateVoiture(voitureViewModel, voiture);
                 }
@@ -155,6 +152,7 @@ namespace Express_Voitures.Controllers
         }
 
         // GET: Voiture/Delete/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -176,6 +174,7 @@ namespace Express_Voitures.Controllers
         // POST: Voiture/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var voiture = await _context.Voiture.FindAsync(id);

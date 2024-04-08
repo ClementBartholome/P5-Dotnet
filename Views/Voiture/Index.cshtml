@@ -6,9 +6,12 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Ajouter une nouvelle voiture</a>
-</p>
+@if (User.HasClaim("Admin", "true"))
+{
+    <p>
+        <a asp-action="Create">Ajouter une nouvelle voiture</a>
+    </p>
+}
 <table class="table">
     <thead>
     <tr>
@@ -17,21 +20,30 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Marque)
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBrandModal">
-                <i class="bi bi-plus"></i>
-            </button>
+            @if (User.HasClaim("Admin", "true"))
+            {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBrandModal">
+                    <i class="bi bi-plus"></i>
+                </button>
+            }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Modele)
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModeleModal">
-                <i class="bi bi-plus"></i>
-            </button>
+            @if (User.HasClaim("Admin", "true"))
+            {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModeleModal">
+                    <i class="bi bi-plus"></i>
+                </button>
+            }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Finition)
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFinitionModal">
-                <i class="bi bi-plus"></i>
-            </button>
+            @if (User.HasClaim("Admin", "true"))
+            {
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFinitionModal">
+                    <i class="bi bi-plus"></i>
+                </button>
+            }
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Annee)

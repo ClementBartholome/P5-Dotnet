@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Express_Voitures.Data;
 using Express_Voitures.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +11,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Admin", policyBuilder =>
+        policyBuilder.RequireClaim("Admin"));
 
 builder.Services.AddScoped<VoitureService>();
 builder.Services.AddScoped<MarqueService>();
