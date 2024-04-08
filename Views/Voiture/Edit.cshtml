@@ -1,4 +1,4 @@
-@model Express_Voitures.Models.Voiture
+@model Express_Voitures.ViewModels.VoitureViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,39 +7,85 @@
 <h1>Edit</h1>
 
 <h4>Voiture</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
-                <label asp-for="MarqueId" class="control-label"></label>
-                <select asp-for="MarqueId" class="form-control" asp-items="ViewBag.MarqueId"></select>
-                <span asp-validation-for="MarqueId" class="text-danger"></span>
+                <label asp-for="CodeVin" class="control-label"></label>
+                <input asp-for="CodeVin" class="form-control" value="@Model.CodeVin"/>
+                <span asp-validation-for="CodeVin" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label asp-for="Marque" class="control-label"></label>
+                <select id="marqueSelect" asp-for="Marque" class="form-control" asp-items="ViewBag.Marques">
+                    <option selected value="@Model.Marque"></option>
+                </select>
+                <span asp-validation-for="Marque" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label asp-for="Modele" class="control-label"></label>
+                <select id="modeleSelect" asp-for="Modele" class="form-control">
+                    <option selected value="@Model.Modele"></option>
+                </select>
+                <span asp-validation-for="Modele" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label asp-for="Finition" class="control-label"></label>
+                <select id="finitionSelect" asp-for="Finition" class="form-control">
+                    <option selected value="@Model.Finition"></option>
+                </select>
+                <span asp-validation-for="Finition" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Annee" class="control-label"></label>
-                <input asp-for="Annee" class="form-control" />
+                <input asp-for="Annee" class="form-control"/>
                 <span asp-validation-for="Annee" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateAchat" class="control-label"></label>
-                <input asp-for="DateAchat" class="form-control" />
+                <input asp-for="DateAchat" class="form-control"/>
                 <span asp-validation-for="DateAchat" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PrixAchat" class="control-label"></label>
-                <input asp-for="PrixAchat" class="form-control" />
+                <input asp-for="PrixAchat" class="form-control"/>
                 <span asp-validation-for="PrixAchat" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
+                    <input class="form-check-input" asp-for="Disponible"/> @Html.DisplayNameFor(model => model.Disponible)
                 </label>
             </div>
+            <div class="form-group" id="dateDisponibiliteGroup" style="display: none;">
+                <label asp-for="DateDisponibilite" class="control-label"></label>
+                <input asp-for="DateDisponibilite" class="form-control"/>
+                <span asp-validation-for="DateDisponibilite" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Vendu"/> @Html.DisplayNameFor(model => model.Vendu)
+                </label>
+            </div>
+            <div class="form-group" id="dateVenteGroup" style="display: none;">
+                <label asp-for="DateVente" class="control-label"></label>
+                <input asp-for="DateVente" class="form-control"/>
+                <span asp-validation-for="DateVente" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label asp-for="Reparations" class="control-label"></label>
+                <input asp-for="Reparations" class="form-control"/>
+                <span asp-validation-for="Reparations" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label asp-for="CoutReparations" class="control-label"></label>
+                <input asp-for="CoutReparations" class="form-control"/>
+                <span asp-validation-for="CoutReparations" class="text-danger"></span>
+            </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -49,3 +95,100 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modelesParMarque = @Html.Raw(Json.Serialize(ViewBag.ModelesParMarque));
+    const finitionsParModele = @Html.Raw(Json.Serialize(ViewBag.FinitionsParModele));
+    const marqueSelect = document.getElementById('marqueSelect');
+    const modeleSelect = document.getElementById('modeleSelect');
+    const finitionSelect = document.getElementById('finitionSelect');
+
+
+    marqueSelect.addEventListener('change', function () {
+        let marqueId = this.value;
+
+        while (modeleSelect.firstChild) {
+            modeleSelect.removeChild(modeleSelect.firstChild);
+        }
+
+        modeleSelect.disabled = !marqueId;
+
+        if (marqueId) {
+            let marqueModeles = modelesParMarque[marqueId].$values;
+
+            marqueModeles.forEach(function (modele) {
+                modeleSelect.appendChild(new Option(modele.text, modele.value));
+            });
+        }
+
+        let modeleId = modeleSelect.value;
+
+        while (finitionSelect.firstChild) {
+            finitionSelect.removeChild(finitionSelect.firstChild);
+        }
+
+        finitionSelect.disabled = !modeleId;
+
+        if (modeleId) {
+            let modeleFinitions = finitionsParModele[modeleId].$values;
+
+            modeleFinitions.forEach(function (finition) {
+                finitionSelect.appendChild(new Option(finition.text, finition.value));
+            });
+        }
+    });
+
+    modeleSelect.addEventListener('change', function () {
+        let modeleId = this.value;
+
+        while (finitionSelect.firstChild) {
+            finitionSelect.removeChild(finitionSelect.firstChild);
+        }
+
+        finitionSelect.disabled = !modeleId;
+
+        if (modeleId) {
+            let modeleFinitions = finitionsParModele[modeleId].$values;
+
+            modeleFinitions.forEach(function (finition) {
+                finitionSelect.appendChild(new Option(finition.text, finition.value));
+            });
+        }
+    });
+
+    const disponibleCheckbox = document.querySelector('input[name="Disponible"]');
+    const dateDisponibiliteGroup = document.getElementById('dateDisponibiliteGroup');
+    
+    if (disponibleCheckbox.checked) {
+            dateDisponibiliteGroup.style.display = 'block';
+        } else {
+            dateDisponibiliteGroup.style.display = 'none';
+        }
+    disponibleCheckbox.addEventListener('change', function () {
+        if (this.checked) {   
+            dateDisponibiliteGroup.style.display = 'block';
+        } else {
+            dateDisponibiliteGroup.style.display = 'none';     
+        }
+    });   
+        
+    const venduCheckbox = document.querySelector('input[name="Vendu"]');
+    const dateVenteGroup = document.getElementById('dateVenteGroup');
+       
+    if (venduCheckbox.checked) {
+        dateVenteGroup.style.display = 'block';
+    } else {
+        dateVenteGroup.style.display = 'none';
+    }
+    
+    venduCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            dateVenteGroup.style.display = 'block';
+        } else {
+            dateVenteGroup.style.display = 'none';  
+            }
+    });
+});
+</script>
+}

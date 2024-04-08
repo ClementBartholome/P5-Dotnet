@@ -58,6 +58,21 @@
                     <input class="form-check-input" asp-for="Disponible"/> @Html.DisplayNameFor(model => model.Disponible)
                 </label>
             </div>
+            <div class="form-group" id="dateDisponibiliteGroup" style="display: none;">
+                <label asp-for="DateDisponibilite" class="control-label"></label>
+                <input asp-for="DateDisponibilite" class="form-control"/>
+                <span asp-validation-for="DateDisponibilite" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check required">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Vendu"/> @Html.DisplayNameFor(model => model.Vendu)
+                </label>
+            </div>
+            <div class="form-group" id="dateVenteGroup" style="display: none;">
+                <label asp-for="DateVente" class="control-label"></label>
+                <input asp-for="DateVente" class="form-control"/>
+                <span asp-validation-for="DateVente" class="text-danger"></span>
+            </div>
             <div class="form-group required">
                 <label asp-for="Reparations" class="control-label"></label>
                 <input asp-for="Reparations" class="form-control"/>
@@ -80,7 +95,7 @@
 </div>
 
 @section Scripts {
-<script>
+    <script>
 document.addEventListener('DOMContentLoaded', function () {
     const modelesParMarque = @Html.Raw(Json.Serialize(ViewBag.ModelesParMarque));
     const finitionsParModele = @Html.Raw(Json.Serialize(ViewBag.FinitionsParModele));
@@ -142,5 +157,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
-});</script>
+
+    const disponibleCheckbox = document.querySelector('input[name="Disponible"]');
+    const dateDisponibiliteGroup = document.getElementById('dateDisponibiliteGroup');
+    
+    disponibleCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                dateDisponibiliteGroup.style.display = 'block';
+            } else {
+                dateDisponibiliteGroup.style.display = 'none';
+            }
+    });   
+    
+    const venduCheckbox = document.querySelector('input[name="Vendu"]');
+    const dateVenteGroup = document.getElementById('dateVenteGroup');
+    
+    venduCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                dateVenteGroup.style.display = 'block';
+            } else {
+                dateVenteGroup.style.display = 'none';
+            }
+    });
+});
+</script>
 }

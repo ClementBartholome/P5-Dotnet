@@ -20,5 +20,6 @@
         public Marque Marque { get; set; }
         public Modele Modele { get; set; }
         public Finition Finition { get; set; }
+        public VoitureVente VoitureVente { get; set; }
     }
 }

@@ -52,6 +52,15 @@
             @Html.DisplayNameFor(model => model.Disponible)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DateDisponibilite)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vendu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateVente)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Reparations)
         </th>
         <th></th>
@@ -90,6 +99,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Disponible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDisponibilite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vendu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateVente)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Reparations)
@@ -188,9 +206,17 @@
                     <div class="form-group">
                         <label for="modeleId" class="col-form-label">Modèle:</label>
                         <select id="modeleId" name="ModeleId" class="form-control">
-                            @foreach (var modele in ViewBag.Modeles)
+                            @if (ViewBag.Modeles != null && ((SelectList)ViewBag.Modeles).Any())
                             {
-                                <option value="@modele.Value">@modele.Text</option>
+                                <option selected hidden value="">Sélectionnez un modèle...</option>
+                                @foreach (var modele in ViewBag.Modeles)
+                                {
+                                    <option value="@modele.Value">@modele.Text</option>
+                                }
+                            }
+                            else
+                            {
+                                <option>Pas de modèles enregistrés</option>
                             }
                         </select>
                     </div>

@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Express_Voitures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240405073228_AddVoitureCodeVin")]
-    partial class AddVoitureCodeVin
+    [Migration("20240405122002_AddVoitureVenteBooleenVendu")]
+    partial class AddVoitureVenteBooleenVendu
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,8 +124,9 @@ namespace Express_Voitures.Migrations
                     b.Property<int>("Annee")
                         .HasColumnType("int");
 
-                    b.Property<int>("CodeVin")
-                        .HasColumnType("int");
+                    b.Property<string>("CodeVin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("CoutReparations")
                         .HasColumnType("decimal(18,2)");
@@ -179,6 +180,9 @@ namespace Express_Voitures.Migrations
 
                     b.Property<decimal>("PrixVente")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("Vendu")
+                        .HasColumnType("bit");
 
                     b.Property<int>("VoitureId")
                         .HasColumnType("int");
