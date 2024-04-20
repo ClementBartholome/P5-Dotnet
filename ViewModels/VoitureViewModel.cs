@@ -15,6 +15,11 @@ public class VoitureViewModel
 
     public string Marque { get; set; }
     public string Modele { get; set; }
+    public List<VoitureViewModel>? Voitures { get; set; }
+    public List<SelectListItem>? Marques { get; set; }
+    public List<SelectListItem>? Modeles { get; set; }
+    public Dictionary<int, List<SelectListItem>>? ModelesParMarque { get; set; }
+    public Dictionary<int, List<SelectListItem>>? FinitionsParModele { get; set; }
     public string Finition { get; set; }
 
     [Range(1990, int.MaxValue, ErrorMessage = "L'année ne peut pas être antérieure à 1990")]

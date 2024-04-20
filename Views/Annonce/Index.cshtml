@@ -1,59 +1,91 @@
-@model IEnumerable<Express_Voitures.ViewModels.AnnonceViewModel>
+@model X.PagedList.IPagedList<Express_Voitures.ViewModels.AnnonceViewModel>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using X.PagedList.Mvc.Core;
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-action="Create">Ajouter une annonce</a>
-</p>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            Nom de la voiture
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VoitureAnnee)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VoiturePrix)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhotoFilePath)
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoitureMarque)
-                @Html.DisplayFor(modelItem => item.VoitureModele)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoitureAnnee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoiturePrixFormatted)€
-            </td>
-            <td>
-                <img src="@item.PhotoFilePath" alt="Image de l'annonce" />
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="container-sm">
+
+    <section class="d-flex align-items-center gap-5">
+        <h2>Nos annonces</h2>
+        @if (User.HasClaim("Admin", "true"))
+        {
+        <p class="button">
+            <i class="bi bi-plus"></i>
+            <a asp-action="Create">Ajouter une annonce</a>
+        </p>
+        }
+    </section>
+
+    <section class="d-flex flex-wrap justify-content-start gap-5 mt-3 mb-3">
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 20rem;">
+                <img class="card-img-top" src="@item.PhotoFilePath" alt="Image de l'annonce" style="object-fit: cover; height: 200px">
+                <div class="card-body">
+                    <h5 class="card-title body-highlight">@Html.DisplayFor(modelItem => item.VoitureMarque) @Html.DisplayFor(modelItem => item.VoitureModele)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.VoitureAnnee)</p>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                </div>
+                <hr/>
+                <p class="py-2 px-3 body-highlight">@Html.DisplayFor(modelItem => item.VoiturePrixFormatted)€</p>
+                <hr/>
+                @if (User.HasClaim("Admin", "true"))
+                {
+                <div class="p-3 d-flex justify-content-between">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">
+                        <i class="bi bi-pencil-square" style="color:white;"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                        <i class="bi bi-trash" style="color:white;"></i>
+                    </a>
+                </div>
+                }
+            </div>
+        }
+    </section>
+
+    <div class="m-auto">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToIndividualPages = true,
+            MaximumPageNumbersToDisplay = 5,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+            LinkToIndividualPageFormat = "{0}",
+            EllipsesFormat = "...",
+        })
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let pagination = document.querySelector('.pagination');
+            pagination.classList.add('justify-content-center');
+
+            let paginationLinks = document.querySelectorAll('.pagination a');
+            paginationLinks.forEach((link) => {
+                link.classList.add('page-link');
+            });
+
+            let paginationSpans = document.querySelectorAll('.pagination span');
+            paginationSpans.forEach((span) => {
+                span.classList.add('page-link');
+            });
+
+            let currentPage = @Model.PageNumber;
+            paginationLinks.forEach((link) => {
+                if (link.textContent == currentPage) {
+                    link.parentElement.classList.add('active');
+                }
+            });
+        });
+    </script>
+}

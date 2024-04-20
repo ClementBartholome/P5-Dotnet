@@ -13,6 +13,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Admin";
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -24,6 +28,7 @@ builder.Services.AddScoped<VoitureService>();
 builder.Services.AddScoped<MarqueService>();
 builder.Services.AddScoped<ModeleService>();
 builder.Services.AddScoped<FinitionService>();
+builder.Services.AddScoped<AnnonceService>();
 
 builder.Services.AddControllersWithViews().AddJsonOptions(options =>
 {

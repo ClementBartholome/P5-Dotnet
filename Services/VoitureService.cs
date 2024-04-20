@@ -1,6 +1,7 @@
 ﻿using Express_Voitures.Data;
 using Express_Voitures.Models;
 using Express_Voitures.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Express_Voitures.Services;
@@ -57,6 +58,26 @@ public class VoitureService
 
         return voiture;
     }
+    
+    public List<SelectListItem> GetVoituresForSelectList()
+    {
+        return _context.Voiture.Select(v => new SelectListItem
+        {
+            Value = v.Id.ToString(),
+            Text = v.Marque.Nom + " " + v.Modele.Nom
+        }).ToList();
+    }
+
+    public List<SelectListItem> GetVoituresDisponibles()
+    {
+        return _context.Voiture
+            .Where(v => v.Disponible && !_context.Annonce.Any(a => a.VoitureId == v.Id))
+            .Select(v => new SelectListItem
+            {
+                Value = v.Id.ToString(),
+                Text = v.Marque.Nom + " " + v.Modele.Nom + " " + v.CodeVin
+            }).ToList();
+    }
 
     public void CreateOrUpdateVoiture(VoitureViewModel voitureViewModel, Voiture? voitureToUpdate = null)
     {
@@ -106,6 +127,39 @@ public class VoitureService
                 voitureVente.PrixVente = Convert.ToDecimal(voitureViewModel.PrixVente);
 
                 _context.VoitureVente.Update(voitureVente);
+            }
+        }
+        
+        if (voitureViewModel.Vendu)
+        {
+            var voitureVente = _context.VoitureVente.FirstOrDefault(vv => vv.VoitureId == voiture.Id);
+            
+            if (voitureVente == null)
+            {
+                voitureVente = new VoitureVente
+                {
+                    Voiture = voiture,
+                    DateDisponibilite = DateTime.Now,
+                    Vendu = true,
+                    DateVente = voitureViewModel.DateVente,
+                    PrixVente = Convert.ToDecimal(voitureViewModel.PrixVente)
+                };
+
+                _context.VoitureVente.Add(voitureVente);
+            }
+            else
+            {
+                voitureVente.DateVente = voitureViewModel.DateVente;
+                voitureVente.PrixVente = Convert.ToDecimal(voitureViewModel.PrixVente);
+                voitureVente.Vendu = true;
+
+                _context.VoitureVente.Update(voitureVente);
+            }
+            
+            var annonce = _context.Annonce.FirstOrDefault(a => a.VoitureId == voiture.Id);
+            if (annonce != null)
+            {
+                _context.Annonce.Remove(annonce);
             }
         }
 

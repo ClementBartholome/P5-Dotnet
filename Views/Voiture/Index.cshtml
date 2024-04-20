@@ -1,17 +1,20 @@
-@model IEnumerable<Express_Voitures.ViewModels.VoitureViewModel>
+@model Express_Voitures.ViewModels.VoitureViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inventaire";
 }
 
-<h1>Index</h1>
+<section class="d-flex align-items-center gap-5">
+    <h2>Inventaire</h2>
+    @if (User.HasClaim("Admin", "true"))
+    {
+        <p class="button">
+            <i class="bi bi-plus"></i>
+            <a asp-action="Create">Ajouter une nouvelle voiture</a>
+        </p>
+    }
+</section>
 
-@if (User.HasClaim("Admin", "true"))
-{
-    <p>
-        <a asp-action="Create">Ajouter une nouvelle voiture</a>
-    </p>
-}
 <table class="table">
     <thead>
     <tr>
@@ -19,31 +22,37 @@
             @Html.DisplayNameFor(model => model.CodeVin)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Marque)
-            @if (User.HasClaim("Admin", "true"))
-            {
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBrandModal">
+            <div class="d-flex align-items-center gap-1">
+                @Html.DisplayNameFor(model => model.Marque)
+                @if (User.HasClaim("Admin", "true"))
+                {
+                <button type="button" class="button ml-2" data-toggle="modal" data-target="#addMarqueModal">
                     <i class="bi bi-plus"></i>
                 </button>
-            }
+                }
+            </div>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Modele)
-            @if (User.HasClaim("Admin", "true"))
-            {
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModeleModal">
+            <div class="d-flex align-items-center gap-1">
+                @Html.DisplayNameFor(model => model.Modele)
+                @if (User.HasClaim("Admin", "true"))
+                {
+                <button type="button" class="button ml-2" data-toggle="modal" data-target="#addModeleModal">
                     <i class="bi bi-plus"></i>
                 </button>
-            }
+                }
+            </div>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Finition)
-            @if (User.HasClaim("Admin", "true"))
-            {
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFinitionModal">
+            <div class="d-flex align-items-center gap-1">
+                @Html.DisplayNameFor(model => model.Finition)
+                @if (User.HasClaim("Admin", "true"))
+                {
+                <button type="button" class="button ml-2" data-toggle="modal" data-target="#addFinitionModal">
                     <i class="bi bi-plus"></i>
                 </button>
-            }
+                }
+            </div>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Annee)
@@ -79,7 +88,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Voitures)
     {
         <tr>
             <td>
@@ -124,11 +133,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Reparations)
             </td>
+            @if (User.HasClaim("Admin", "true"))
+            {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
+            }
         </tr>
     }
     </tbody>
@@ -136,26 +148,26 @@
 
 
 <!-- Modale pour ajouter une marque -->
-<div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+<div class="modal fade" id="addMarqueModal" tabindex="-1" role="dialog" aria-labelledby="addMarqueModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addBrandModalLabel">Ajouter une marque</h5>
+                <h5 class="modal-title" id="addMarqueModalLabel">Ajouter une marque</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addBrandForm" method="post" asp-controller="Marque" asp-action="Create">
+                <form id="addMarqueForm" method="post" asp-controller="Marque" asp-action="Create">
                     <div class="form-group">
-                        <label for="brandName" class="col-form-label">Nom de la marque:</label>
-                        <input type="text" class="form-control" id="brandName" name="Nom">
+                        <label for="marqueName" class="col-form-label">Nom de la marque:</label>
+                        <input type="text" class="form-control" id="marqueName" name="Nom">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                <button type="submit" form="addBrandForm" class="btn btn-primary" id="addBrandButton">Ajouter</button>
+                <button type="submit" form="addMarqueForm" class="button" id="addMarqueButton">Ajouter</button>
             </div>
         </div>
     </div>
@@ -176,10 +188,10 @@
                     <div class="form-group">
                         <label for="marqueSelectModal" class="col-form-label">Marque:</label>
                         <select id="marqueSelectModal" name="MarqueId" class="form-control">
-                            @if (ViewBag.Marques != null && ((SelectList)ViewBag.Marques).Any())
+                            @if (Model.Marques != null && Model.Marques.Any())
                             {
                                 <option selected hidden value="">Sélectionnez une marque...</option>
-                                @foreach (var marque in ViewBag.Marques)
+                                @foreach (var marque in Model.Marques)
                                 {
                                     <option value="@marque.Value">@marque.Text</option>
                                 }
@@ -198,7 +210,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                <button type="submit" form="addModeleForm" class="btn btn-primary" id="addModeleButton">Ajouter</button>
+                <button type="submit" form="addModeleForm" class="button" id="addModeleButton">Ajouter</button>
             </div>
         </div>
     </div>
@@ -218,10 +230,10 @@
                     <div class="form-group">
                         <label for="modeleId" class="col-form-label">Modèle:</label>
                         <select id="modeleId" name="ModeleId" class="form-control">
-                            @if (ViewBag.Modeles != null && ((SelectList)ViewBag.Modeles).Any())
+                            @if (Model.Modeles != null && Model.Modeles.Any())
                             {
                                 <option selected hidden value="">Sélectionnez un modèle...</option>
-                                @foreach (var modele in ViewBag.Modeles)
+                                @foreach (var modele in Model.Modeles)
                                 {
                                     <option value="@modele.Value">@modele.Text</option>
                                 }
@@ -240,7 +252,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                <button type="submit" form="addFinitionForm" class="btn btn-primary" id="addFinitionButton">Ajouter</button>
+                <button type="submit" form="addFinitionForm" class="button" id="addFinitionButton">Ajouter</button>
             </div>
         </div>
     </div>
@@ -252,15 +264,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('addBrandButton').addEventListener('click', function() {
-            const brandName = document.getElementById('brandName').value;
+        document.getElementById('addMarqueButton').addEventListener('click', function() {
+            const marqueName = document.getElementById('marqueName').value;
         
             const option = document.createElement('option');
-            option.text = brandName;
-            option.value = brandName;
-            document.getElementById('brandSelect').add(option);
+            option.text = marqueName;
+            option.value = marqueName;
+            document.getElementById('marqueSelect').add(option);
         
-            document.getElementById('addBrandModal').style.display = 'none';
+            document.getElementById('addMarqueModal').style.display = 'none';
         });
         
         document.getElementById('addModeleButton').addEventListener('click', function() {

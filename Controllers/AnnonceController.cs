@@ -1,47 +1,43 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Express_Voitures.Data;
-using Express_Voitures.Models;
 using Express_Voitures.Services;
 using Express_Voitures.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
 
 namespace Express_Voitures.Controllers
 {
     public class AnnonceController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly VoitureService _voitureService;
+        private readonly AnnonceService _annonceService;
 
-        public AnnonceController(AppDbContext context, VoitureService voitureService)
+        public AnnonceController(VoitureService voitureService, AnnonceService annonceService)
         {
-            _context = context;
             _voitureService = voitureService;
+            _annonceService = annonceService;
         }
 
         // GET: Annonce
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var annonces = await _context.Annonce
-                .Include(a => a.Voiture)
-                .ThenInclude(v => v.VoitureVente).Include(annonce => annonce.Voiture)
-                .ThenInclude(voiture => voiture.Marque).Include(annonce => annonce.Voiture)
-                .ThenInclude(voiture => voiture.Modele)
-                .ToListAsync();
+            var annonces = await _annonceService.GetAllAnnonces();
             var viewModel = annonces.Select(a => new AnnonceViewModel
             {
                 Id = a.Id,
                 VoitureId = a.VoitureId,
-                VoitureMarque = a.Voiture.Marque.Nom,
-                VoitureModele = a.Voiture.Modele.Nom,
-                VoitureAnnee = a.Voiture.Annee,
-                VoiturePrix = a.Voiture.VoitureVente.PrixVente,
+                VoitureMarque = a.Voiture?.Marque?.Nom,
+                VoitureModele = a.Voiture?.Modele?.Nom,
+                VoitureAnnee = a.Voiture?.Annee,
+                VoiturePrix = a.Voiture?.VoitureVente?.PrixVente,
                 Description = a.Description,
                 PhotoFilePath = a.PhotoFilePath
             }).ToList();
-            
 
-            return View(viewModel);
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+
+            return View(viewModel.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Annonce/Details/5
@@ -52,35 +48,31 @@ namespace Express_Voitures.Controllers
                 return NotFound();
             }
 
-            var annonce = await _context.Annonce
-                .Include(a => a.Voiture)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (annonce == null)
+            var annonce = await _annonceService.GetAnnonceById(id);
+
+            if (annonce != null)
             {
-                return NotFound();
+                var viewModel = new AnnonceViewModel
+                {
+                    Id = annonce.Id,
+                    VoitureId = annonce.VoitureId,
+                    Description = annonce.Description,
+                    PhotoFilePath = annonce.PhotoFilePath
+                };
+
+                return View(viewModel);
             }
 
-            var viewModel = new AnnonceViewModel
-            {
-                Id = annonce.Id,
-                VoitureId = annonce.VoitureId,
-                Description = annonce.Description,
-                PhotoFilePath = annonce.PhotoFilePath
-            };
-
-            return View(viewModel);
+            return NotFound();
         }
-        
+
         // GET: Annonce/Create
+        [Authorize(Policy = "Admin")]
         public IActionResult Create()
         {
             var viewModel = new AnnonceViewModel
             {
-                Voitures = _context.Voiture.Select(v => new SelectListItem
-                {
-                    Value = v.Id.ToString(),
-                    Text = v.Marque.Nom + " " + v.Modele.Nom
-                }).ToList()
+                Voitures = _voitureService.GetVoituresDisponibles()
             };
 
             return View(viewModel);
@@ -89,10 +81,19 @@ namespace Express_Voitures.Controllers
         // POST: Annonce/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create(AnnonceViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var existingAnnonce = await _annonceService.GetAnnonceByVoitureId(viewModel.VoitureId);
+                if (existingAnnonce != null)
+                {
+                    ModelState.AddModelError("", "Une annonce existe déjà pour cette voiture.");
+                    viewModel.Voitures = _voitureService.GetVoituresDisponibles();
+                    return View(viewModel);
+                }
+
                 var fileName = Path.GetFileName(viewModel.UploadedImage?.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
                 using (var stream = System.IO.File.Create(filePath))
@@ -100,21 +101,15 @@ namespace Express_Voitures.Controllers
                     await viewModel.UploadedImage?.CopyToAsync(stream)!;
                 }
 
-                var annonce = new Annonce
-                {
-                    VoitureId = viewModel.VoitureId,
-                    Description = viewModel.Description,
-                    PhotoFilePath = "/images/" + fileName
-                };
-
-                _context.Add(annonce);
-                await _context.SaveChangesAsync();
+                await _annonceService.CreateAnnonce(viewModel, "/images/" + fileName);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(viewModel);
         }
 
         // GET: Annonce/Edit/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,7 +117,7 @@ namespace Express_Voitures.Controllers
                 return NotFound();
             }
 
-            var annonce = await _context.Annonce.FindAsync(id);
+            var annonce = await _annonceService.GetAnnonceById(id);
             if (annonce == null)
             {
                 return NotFound();
@@ -133,16 +128,17 @@ namespace Express_Voitures.Controllers
                 Id = annonce.Id,
                 VoitureId = annonce.VoitureId,
                 Description = annonce.Description,
-                PhotoFilePath = annonce.PhotoFilePath
+                PhotoFilePath = annonce.PhotoFilePath,
+                Voitures = _voitureService.GetVoituresForSelectList()
             };
 
-            ViewData["VoitureId"] = new SelectList(_context.Voiture, "Id", "Id", viewModel.VoitureId);
             return View(viewModel);
         }
 
         // POST: Annonce/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int id, AnnonceViewModel viewModel)
         {
             if (id != viewModel.Id)
@@ -150,39 +146,41 @@ namespace Express_Voitures.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(viewModel);
+            try
             {
-                try
+                if (viewModel.UploadedImage != null)
                 {
-                    var annonce = new Annonce
+                    var fileName = Path.GetFileName(viewModel.UploadedImage.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                    using (var stream = System.IO.File.Create(filePath))
                     {
-                        Id = viewModel.Id,
-                        VoitureId = viewModel.VoitureId,
-                        Description = viewModel.Description,
-                        PhotoFilePath = viewModel.PhotoFilePath
-                    };
+                        await viewModel.UploadedImage.CopyToAsync(stream);
+                    }
 
-                    _context.Update(annonce);
-                    await _context.SaveChangesAsync();
+                    await _annonceService.UpdateAnnonce(viewModel, "/images/" + fileName);
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!AnnonceExists(viewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    await _annonceService.UpdateAnnonce(viewModel, null);
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VoitureId"] = new SelectList(_context.Voiture, "Id", "Id", viewModel.VoitureId);
-            return View(viewModel);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AnnonceExists(viewModel.Id))
+                {
+                    return NotFound();
+                }
+
+                throw new Exception("Erreur de mise à jour de l'annonce");
+            }
         }
 
+
         // GET: Annonce/Delete/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -190,9 +188,7 @@ namespace Express_Voitures.Controllers
                 return NotFound();
             }
 
-            var annonce = await _context.Annonce
-                .Include(a => a.Voiture)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var annonce = await _annonceService.GetAnnonceById(id);
             if (annonce == null)
             {
                 return NotFound();
@@ -212,30 +208,30 @@ namespace Express_Voitures.Controllers
         // POST: Annonce/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var annonce = await _context.Annonce.FindAsync(id);
-            if (annonce != null)
+            var annonce = await _annonceService.GetAnnonceById(id);
+            if (annonce == null) return RedirectToAction(nameof(Index));
+            // Get the full path of the image
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",
+                annonce.PhotoFilePath.TrimStart('/'));
+
+            // Check if the file exists and delete it
+            if (System.IO.File.Exists(imagePath))
             {
-                // Get the full path of the image
-                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", annonce.PhotoFilePath.TrimStart('/'));
-
-                // Check if the file exists and delete it
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-
-                _context.Annonce.Remove(annonce);
+                System.IO.File.Delete(imagePath);
             }
 
-            await _context.SaveChangesAsync();
+            await _annonceService.DeleteAnnonce(annonce);
+
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool AnnonceExists(int id)
         {
-            return _context.Annonce.Any(e => e.Id == id);
+            return _annonceService.GetAnnonceById(id) != null;
         }
     }
 }

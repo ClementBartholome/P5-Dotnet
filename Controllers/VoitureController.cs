@@ -16,27 +16,35 @@ namespace Express_Voitures.Controllers
         private readonly MarqueService _marqueService;
         private readonly ModeleService _modeleService;
         private readonly FinitionService _finitionService;
+        private readonly AnnonceService _annonceService;
 
 
         public VoitureController(AppDbContext context, VoitureService voitureService, MarqueService marqueService,
-            ModeleService modeleService, FinitionService finitionService)
+            ModeleService modeleService, FinitionService finitionService, AnnonceService annonceService)
         {
             _context = context;
             _voitureService = voitureService;
             _marqueService = marqueService;
             _modeleService = modeleService;
             _finitionService = finitionService;
+            _annonceService = annonceService;
         }
 
         // GET: Voiture
         public async Task<IActionResult> Index()
         {
             var voitures = await _voitureService.GetAllVoitures();
+            var marques = new SelectList(_context.Marque.ToList(), "Id", "Nom");
+            var modeles = new SelectList(_context.Modele.ToList(), "Id", "Nom");
 
-            ViewBag.Marques = new SelectList(_context.Marque.ToList(), "Id", "Nom");
-            ViewBag.Modeles = new SelectList(_context.Modele.ToList(), "Id", "Nom");
+            var viewModel = new VoitureViewModel
+            {
+                Voitures = voitures,
+                Marques = marques.ToList(),
+                Modeles = modeles.ToList()
+            };
 
-            return View(voitures);
+            return View(viewModel);
         }
 
         // GET: Voiture/Details/5
@@ -114,6 +122,7 @@ namespace Express_Voitures.Controllers
                 {
                     voitureVente.DateVente = voitureViewModel.DateVente;
                     voitureVente.PrixVente = decimal.Parse(voitureViewModel.PrixVente);
+                    voitureVente.Vendu = voitureViewModel.Vendu;
                 }
             }
 
@@ -132,6 +141,15 @@ namespace Express_Voitures.Controllers
             {
                 try
                 {
+                    if (voitureViewModel.Vendu)
+                    {
+                        var annonce = await _annonceService.GetAnnonceByVoitureId(voitureViewModel.Id);
+                        if (annonce != null)
+                        {
+                            await _annonceService.DeleteAnnonce(annonce);
+                        }
+                    }
+                    
                     var voiture = await _voitureService.GetVoitureById(id);
                     _voitureService.CreateOrUpdateVoiture(voitureViewModel, voiture);
                 }
