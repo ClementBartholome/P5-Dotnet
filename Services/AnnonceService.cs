@@ -89,4 +89,32 @@ public class AnnonceService
         
         return annonce;
     }
+    
+    public async Task<List<AnnonceViewModel>> GetLastAnnonces(int count)
+    {
+        var annonces = await _context.Annonce
+            .Include(a => a.Voiture)
+            .ThenInclude(v => v.VoitureVente)
+            .Include(annonce => annonce.Voiture)
+            .ThenInclude(voiture => voiture.Marque)
+            .Include(annonce => annonce.Voiture)
+            .ThenInclude(voiture => voiture.Modele)
+            .OrderByDescending(a => a.Id)
+            .Take(count)
+            .ToListAsync();
+        
+        var vm = annonces.Select(a => new AnnonceViewModel
+        {
+            Id = a.Id,
+            VoitureId = a.VoitureId,
+            VoitureMarque = a.Voiture?.Marque?.Nom,
+            VoitureModele = a.Voiture?.Modele?.Nom,
+            VoitureAnnee = a.Voiture?.Annee,
+            VoiturePrix = a.Voiture?.VoitureVente?.PrixVente,
+            Description = a.Description,
+            PhotoFilePath = a.PhotoFilePath
+        }).ToList();
+        
+        return vm;
+    }
 }
