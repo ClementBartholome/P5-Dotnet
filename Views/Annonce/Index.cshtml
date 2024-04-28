@@ -8,18 +8,18 @@
 
 <div class="container-sm">
 
-    <section class="d-flex align-items-center gap-5">
-        <h2>Nos annonces</h2>
+    <section class="d-flex align-items-center gap-3">
+        <h2 class="me-4">Nos annonces</h2>
         @if (User.HasClaim("Admin", "true"))
         {
-        <p class="button">
-            <i class="bi bi-plus"></i>
-            <a asp-action="Create">Ajouter une annonce</a>
-        </p>
+            <p class="button">
+                <i class="bi bi-plus"></i>
+                <a asp-action="Create">Ajouter une annonce</a>
+            </p>
         }
     </section>
 
-    <section class="d-flex flex-wrap justify-content-start gap-5 mt-3 mb-3">
+    <section class="d-flex flex-wrap justify-content-start gap-4 mt-3 mb-3">
         @foreach (var item in Model)
         {
             <div class="card" style="width: 20rem;">
@@ -34,14 +34,15 @@
                 <hr/>
                 @if (User.HasClaim("Admin", "true"))
                 {
-                <div class="p-3 d-flex justify-content-between">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">
-                        <i class="bi bi-pencil-square" style="color:white;"></i>
-                    </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
-                        <i class="bi bi-trash" style="color:white;"></i>
-                    </a>
-                </div>
+                    <div class="p-3 d-flex justify-content-between">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">
+                            <i class="bi bi-pencil-square" style="color:white;"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                            <i class="bi bi-trash" style="color:white;"></i>
+                        </button>
+                        <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
+                    </div>
                 }
             </div>
         }
@@ -62,6 +63,25 @@
         })
     </div>
 
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Voulez-vous vraiment supprimer cet élément ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                <a id="deleteConfirm" class="btn btn-primary">Oui</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -85,6 +105,17 @@
                 if (link.textContent == currentPage) {
                     link.parentElement.classList.add('active');
                 }
+            });
+        });
+
+        const deleteButtons = document.querySelectorAll('.btn-danger');
+        deleteButtons.forEach((btn) => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const deleteConfirmButton = document.getElementById('deleteConfirm');
+                deleteConfirmButton.addEventListener('click', function() {
+                    document.getElementById('deleteForm-' + id).submit();
+                });
             });
         });
     </script>
