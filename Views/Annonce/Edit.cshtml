@@ -4,6 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
+<div class="container-sm">
+
 <h2 class="d-flex align-items-center gap-5 mb-2">Modification d'une annonce</h2>
 
 <div class="row">
@@ -11,27 +13,26 @@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id"/>
-            <div class="form-group">
+            <div class="form-group required mb-4">
                 <label asp-for="VoitureId" class="control-label"></label>
-                <select asp-for="VoitureId" class="form-control" asp-items="Model.Voitures"></select>
+                <select asp-for="VoitureId" class="form-control" asp-items="Model.Voitures" disabled="disabled"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group required mb-4">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control"/>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PhotoFilePath" class="control-label">Upload</label>
+            <div class="form-group mb-4">
+                <label asp-for="PhotoFilePath" class="control-label">Image</label>
                 <input asp-for="UploadedImage" class="form-control" type="file"/>
                 <span asp-validation-for="PhotoFilePath" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <a asp-action="Index" class="btn btn-danger">Annuler</a>
                 <input type="submit" value="Sauvegarder" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Retour à la liste</a>
 </div>

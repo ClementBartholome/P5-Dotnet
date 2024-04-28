@@ -4,46 +4,48 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Ajouter une annonce</h1>
+<div class="container">
 
-<hr/>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="VoitureId" class="control-label"></label>
-                <select asp-for="VoitureId" class="form-control">
-                    @if (Model.Voitures != null && Model.Voitures.Any())
-                    {
-                    @foreach (var voiture in Model.Voitures)
-                    {
-                    <option value="@voiture.Value">@voiture.Text</option>
-                    }
-                    }
-                    else
-                    {
-                    <option>Pas de voitures disponibles</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhotoFilePath" class="control-label">Image</label>
-                <input asp-for="UploadedImage" class="form-control" type="file"/> 
-                <span asp-validation-for="PhotoFilePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Créer" class="btn btn-primary"/>
-            </div>
-        </form>
+    <h2 class="text-uppercase body-highlight-m mb-3">Ajouter une annonce</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group required mb-4">
+                    <label asp-for="VoitureId" class="control-label"></label>
+                    <select asp-for="VoitureId" class="form-control">
+                        @if (Model.Voitures != null && Model.Voitures.Any())
+                        {
+                            @foreach (var voiture in Model.Voitures)
+                            {
+                                <option value="@voiture.Value">@voiture.Text</option>
+                            }
+                        }
+                        else
+                        {
+                            <option>Pas de voitures disponibles</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group required mb-4">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Veuillez saisir une description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="PhotoFilePath" class="control-label">Ajouter une photo</label>
+                    <input asp-for="UploadedImage" class="form-control" type="file"/>
+                    <span asp-validation-for="PhotoFilePath" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Index" class="btn btn-danger">Annuler</a>
+                    <input type="submit" value="Sauvegarder" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Retour à la liste</a>
+   
+
 </div>
