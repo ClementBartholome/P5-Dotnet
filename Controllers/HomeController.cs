@@ -1,21 +1,16 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Express_Voitures.Models;
+using Express_Voitures.Services;
 
 namespace Express_Voitures.Controllers;
 
-public class HomeController : Controller
+public class HomeController(AnnonceService annonceService) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public async Task<IActionResult> Index()
     {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
+        var annonces = await annonceService.GetLastAnnonces(3);
+        return View(annonces);
     }
 
     public IActionResult Privacy()

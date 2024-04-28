@@ -1,8 +1,114 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<Express_Voitures.ViewModels.AnnonceViewModel>;
+
+@{
+    ViewData["Title"] = "Page d'accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero mb-5">
+    <div class="container-sm px-5">
+        <div class="row">
+            <div class="col-lg-6 d-flex flex-column gap-4 align-items-baseline">
+                <h1 class="hero-heading" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Express Voitures</h1>
+                <p class="hero-text" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);">Les voitures d'occasion au <span class="body-highlight-purple">meilleur prix</span></p>
+                <a href="/Annonce" class="btn cta btn-lg btn-primary" >Toutes nos annonces</a>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-center">
+                <img src="~/images/logo-xl.png" alt="Hero Express Voitures" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gallery mb-5">
+    <div class="container-sm px-5">
+        <h2 class="gallery-heading mx-auto mb-3">Nos derniers modèles</h2>
+        <div class="row">
+            @foreach (var annonce in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <img src="@annonce.PhotoFilePath" alt="Voiture 1" class="card-img-top img-fluid h-100">
+                        <div class="card-body">
+                            <p class="card-titlebody-highlight">@annonce.VoitureMarque @annonce.VoitureModele</p>
+                            <p class="card-text">@annonce.VoitureAnnee</p>
+                            <p class="body-highlight">@annonce.VoiturePrixFormatted €</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="banner p-5 vw-100 d-flex text-center mb-5">
+    <div class="m-auto w-50 d-flex flex-column gap-3">
+        <h3 class="body-highlight-m">Trouvez votre prochaine voiture !</h3>
+        <p class="">Nous proposons une large gamme de voitures d'occasion de qualité. Que vous cherchiez une voiture économique, une voiture de sport, un SUV ou une citadine, nous avons ce qu'il vous faut.</p>
+        <div class="row">
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+                <img src="~/images/renault-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Renault">
+                <p class="text-center">Renault</p>
+            </div>
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+                <img src="~/images/peugeot-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Peugeot">
+                <p class="text-center">Peugeot</p>
+            </div>
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+                <img src="~/images/mercedes-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Mercedes">
+                <p class="text-center">Mercedes</p>
+            </div>
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+                <img src="~/images/ford-logo.png" class="card-img-top h-50 img-fluid" alt="Logo Ford">
+                <p class="text-center">Ford</p>
+            </div>
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+                <img src="~/images/jeep-logo.png" class="card-img-top h-50 img-fluid" alt="Logo Jeep">
+                <p class="text-center">Jeep</p>
+            </div>
+        </div>
+        <a href="/Annonce" class="btn cta btn-lg btn-primary align-self-center">Toutes nos annonces</a>
+    </div>
+</section>
+
+<section class="services mb-5">
+    <div class="container-sm px-5">
+        <h2 class="gallery-heading mx-auto mb-3">Nos services</h2>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-body h-100 d-flex flex-column align-items-start shadow-lg" style="background-color: var(--secondary);">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-car-front-fill fs-1 me-3" style="color: var(--button);"></i>
+                        <h3 class="headline-p" style="color: var(--headline);">Véhicules toutes marques</h3>
+                    </div>
+                    <p class="card-text" style="color: var(--headline);">Un large choix de marques de voiture à prix attractifs (Mazda, Jeep, Renault, Ford, Volkswagen, Peugeot...)</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-body h-100 d-flex flex-column align-items-start shadow-lg" style="background-color: var(--secondary);">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-tools fs-1 me-3" style="color: var(--button);"></i>
+                        <h3 class="headline-p" style="color: var(--headline);">Occasions révisées</h3>
+                    </div>
+                    <p class="card-text" style="color: var(--headline);">Véhicules d’occasion reconditionnés afin de garantir votre sécurité et votre confort</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-body h-100 d-flex flex-column align-items-start shadow-lg" style="background-color: var(--secondary);">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-chat-dots-fill fs-1 me-3" style="color: var(--button);"></i>
+                        <h3 class="headline-p" style="color: var(--headline);">Une équipe à l'écoute</h3>
+                    </div>
+                    <p class="card-text" style="color: var(--headline);">Laissez-vous guider par notre équipe d’experts afin de trouver votre véhicule idéal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact mb-5">
+    <div class="container-sm px-5">
+        <h2 class="gallery-heading mx-auto mb-3">Contactez-nous</h2>
+        <p class="text-center">Vous souhaitez nous poser une question, nous faire un feedback, ou tout simplement nous contacter ?<br/>
+            Écrivez-nous à <span class="body-highlight-purple">express.voitures@gmail.com</span> ou appelez-nous au <span class="body-highlight-purple">01 02 03 04 05</span></p>
+    </div>
+</section>
