@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Express_Voitures.Data;
 using Express_Voitures.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Admin";
 });
+
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 builder.Services.AddControllersWithViews();
 

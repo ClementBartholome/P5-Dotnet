@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using Express_Voitures.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Express_Voitures.ViewModels;
