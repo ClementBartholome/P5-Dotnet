@@ -75,6 +75,7 @@ namespace Express_Voitures.Controllers
                 if (!isVinUnique)
                 {
                     ModelState.AddModelError("CodeVin", "Ce Code VIN est déjà utilisé");
+                    await FillViewBag();
                     return View(voitureViewModel);
                 }
                 
