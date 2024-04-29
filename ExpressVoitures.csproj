@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Express_Voitures</RootNamespace>
-        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+<!--        <EnableDefaultContentItems>false</EnableDefaultContentItems>-->
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,9 +26,9 @@
       <PackageReference Include="X.PagedList.Mvc.Core" Version="9.1.2" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />
-    </ItemGroup>
+<!--    <ItemGroup>-->
+<!--        <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />-->
+<!--    </ItemGroup>-->
 
     <ItemGroup>
       <None Include="Web.config">
