@@ -133,18 +133,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Reparations)
             </td>
-            @if (User.HasClaim("Admin", "true"))
-            {
-            <td class="d-flex gap-2 align-items-baseline">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">
-                    <i class="bi bi-pencil-square" style="color:white;"></i>
-                </a>
-                <button type="button" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
-                    <i class="bi bi-trash" style="color:white;"></i>
-                </button>
-                <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
+            <td>
+                @if (User.HasClaim("Admin", "true"))
+                {
+                    <div class="d-flex gap-2 align-items-baseline">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                            <i class="bi bi-pencil-square" style="color:white;"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                            <i class="bi bi-trash" style="color:white;"></i>
+                        </button>
+                        <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
+                    </div>
+                }
             </td>
-            }
+            <input type="hidden" id="isAdmin" value="@User.HasClaim("Admin", "true")" />
         </tr>
     }
     </tbody>
@@ -286,6 +289,31 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
     <script>
+        let isAdminElement = document.getElementById('isAdmin');
+        let isAdmin = isAdminElement ? isAdminElement.value === 'True' : false;
+        let columnDefs = [
+            { targets: 0 },
+            { targets: 1 },
+            { targets: 2 },
+            { targets: 3 },
+            { targets: 4 },
+            { targets: 5 },
+            { targets: 6 },
+            { targets: 7 },
+            { targets: 8 },
+            { targets: 9 },
+            { targets: 10 },
+            { targets: 11 },
+            { targets: 12 },
+            { targets: 13 }
+        ];
+
+        if (isAdmin) {
+            columnDefs.push({ orderable: false, targets: 14 });
+        } else {
+            columnDefs.push({ visible: false, targets: 14 });
+        }
+
         let table = new DataTable('#cars-table', {
             paging: true,
             searching: true,
@@ -294,9 +322,7 @@
             lengthMenu: [10, 25, 50, 100],
             pageLength: 10,
             order: [[1, 'asc']],
-            columnDefs: [
-                { orderable: false, targets: 14 }
-            ],
+            columnDefs: columnDefs,
             language: {
                 "processing":     "Traitement en cours...",
                 "search":         "Rechercher&nbsp;:",
