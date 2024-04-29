@@ -27,7 +27,7 @@ jobs:
 
       - name: Build project and copy output files
         run: | 
-          msbuild /nologo /verbosity:m /t:Build /p:OutDir="\published\" ExpressVoitures.csproj
+          msbuild /nologo /verbosity:m /t:Publish /p:PublishDir="\published\" ExpressVoitures.csproj
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
