@@ -25,8 +25,9 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore ExpressVoitures.csproj
 
-      - name: Publish to folder
-        run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+      - name: Build project and copy output files
+        run: | 
+          msbuild /nologo /verbosity:m /t:Build /p:OutDir="\published\" ExpressVoitures.csproj
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
