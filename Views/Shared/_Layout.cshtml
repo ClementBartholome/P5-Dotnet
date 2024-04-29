@@ -1,47 +1,62 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Express_Voitures.Data
+@using Microsoft.AspNetCore.Mvc.Infrastructure
+@inject IActionContextAccessor ActionContextAccessor
+@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Express Voitures</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/Express_Voitures.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css">
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light shadow mb-5">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Express Voitures</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="img-fluid" src="~/images/logo-sm.jpg" alt="Logo Express Voitures">
+            </a>
+            <button class="navbar-toggler ms-lg-auto" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between ms-4">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Annonce" ? "active" : "")" asp-area="" asp-controller="Annonce" asp-action="Index">Annonces</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Voiture" asp-action="Index">Voitures</a>
+                        <a class="nav-link  @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Voiture" ? "active" : "")" asp-area="" asp-controller="Voiture" asp-action="Index">Inventaire</a>
                     </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                    <partial name="_LoginPartial"/>
+                    }
                 </ul>
             </div>
+           
         </div>
     </nav>
 </header>
-<div class="container">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
-</div>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; @DateTime.Now.Year - Express Voitures - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<footer class="border-top footer text-muted pt-5">
+    <div class="container-fluid d-flex align-items-center justify-content-center gap-2">
+        <p>
+            &copy; @DateTime.Now.Year - Express Voitures
+        </p> |
+        <p>Mentions légales</p>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
