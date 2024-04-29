@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Express_Voitures.Data;
 using Express_Voitures.Services;
@@ -8,8 +9,16 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(Environment.GetEnvironmentVariable("SQLAZURECONNSTR_prod")));
+}
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
@@ -39,6 +48,26 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options =>
 });
 
 var app = builder.Build();
+
+if (app.Environment.IsProduction())
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+    
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var rootUser = new ApplicationUser { UserName = Environment.GetEnvironmentVariable("ROOT_USERNAME"), Email = Environment.GetEnvironmentVariable("ROOT_EMAIL"), EmailConfirmed = true };
+
+    if (await userManager.FindByNameAsync(rootUser.UserName) == null)
+    {
+        await userManager.CreateAsync(rootUser, Environment.GetEnvironmentVariable("ROOT_PASSWORD"));
+        await userManager.AddClaimAsync(rootUser, new Claim("Admin", "true"));
+    }
+}
+
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+logger.LogInformation("Connection string: {ConnectionString}", configuration.GetConnectionString("DefaultConnection"));
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
