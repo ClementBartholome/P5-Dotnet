@@ -59,7 +59,7 @@ namespace Express_Voitures.Controllers
             {
                 _context.Add(finition);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Voiture");
             }
             return RedirectToAction("Index", "Voiture");
         }
