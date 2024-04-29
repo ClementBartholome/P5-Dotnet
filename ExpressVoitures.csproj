@@ -26,6 +26,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Include="Web.config">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
