@@ -15,6 +15,8 @@
     }
 </section>
 
+<div class="card m-3">
+
 <table id="cars-table" class="table table-striped table-bordered table-hover table-sm px-3" style="font-size: 0.8rem">
     <thead>
     <tr>
@@ -153,6 +155,7 @@
     </tbody>
 </table>
 
+</div>
 
 <!-- Modale pour ajouter une marque -->
 <div class="modal fade" id="addMarqueModal" tabindex="-1" role="dialog" aria-labelledby="addMarqueModalLabel" aria-hidden="true">
@@ -308,11 +311,7 @@
             { targets: 13 }
         ];
 
-        if (isAdmin) {
-            columnDefs.push({ orderable: false, targets: 14 });
-        } else {
-            columnDefs.push({ visible: false, targets: 14 });
-        }
+
 
         let table = new DataTable('#cars-table', {
             paging: true,
