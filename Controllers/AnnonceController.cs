@@ -233,18 +233,18 @@ namespace Express_Voitures.Controllers
         {
             var annonce = await _annonceService.GetAnnonceById(id);
             if (annonce == null) return RedirectToAction(nameof(Index));
-            // Get the full path of the image
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",
-                annonce.PhotoFilePath.TrimStart('/'));
 
-            // Check if the file exists and delete it
-            if (System.IO.File.Exists(imagePath))
-            {
-                System.IO.File.Delete(imagePath);
-            }
+            var blobServiceClient = new BlobServiceClient(_configuration.GetConnectionString("AzureBlobStorage"));
+
+            var containerClient = blobServiceClient.GetBlobContainerClient("images");
+
+            var blobName = Path.GetFileName(new Uri(annonce.PhotoFilePath).LocalPath);
+
+            var blobClient = containerClient.GetBlobClient(blobName);
+
+            await blobClient.DeleteIfExistsAsync();
 
             await _annonceService.DeleteAnnonce(annonce);
-
 
             return RedirectToAction(nameof(Index));
         }
