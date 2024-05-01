@@ -161,6 +161,12 @@ namespace Express_Voitures.Controllers
             if (!ModelState.IsValid) return View(viewModel);
             try
             {
+                var existingAnnonce = await _annonceService.GetAnnonceById(id);
+                if (existingAnnonce == null)
+                {
+                    return NotFound();
+                }
+                
                 if (viewModel.UploadedImage != null)
                 {
                     var fileName = Path.GetFileName(viewModel.UploadedImage.FileName);
@@ -169,8 +175,16 @@ namespace Express_Voitures.Controllers
 
                     var containerClient = blobServiceClient.GetBlobContainerClient("images");
 
-                    var blobClient = containerClient.GetBlobClient(fileName);
+                    // Delete the existing image from the blob
+                    if (!string.IsNullOrEmpty(existingAnnonce.PhotoFilePath))
+                    {
+                        var existingBlobName = Path.GetFileName(new Uri(existingAnnonce.PhotoFilePath).LocalPath);
+                        var existingBlobClient = containerClient.GetBlobClient(existingBlobName);
+                        await existingBlobClient.DeleteIfExistsAsync();
+                    }
 
+                    // Upload the new image to the blob
+                    var blobClient = containerClient.GetBlobClient(fileName);
                     using (var stream = viewModel.UploadedImage.OpenReadStream())
                     {
                         await blobClient.UploadAsync(stream, overwrite: true);
