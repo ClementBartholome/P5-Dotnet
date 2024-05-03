@@ -21,8 +21,10 @@ public class MarqueService
             .ToListAsync();
     }
     
-    public Marque GetMarqueById(int id)
+
+    
+    public bool MarqueExists(string marqueNom)
     {
-        return _context.Marque.FirstOrDefault(m => m.Id == id);
+        return _context.Marque.Any(m => m.Nom == marqueNom);
     }
 }
