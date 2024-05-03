@@ -31,7 +31,7 @@ public class EmailSender : IEmailSender
         var client = new SendGridClient(apiKey);
         var msg = new SendGridMessage()
         {
-            From = new EmailAddress("expressvoitures@gmail.com", "Confirmez la création de votre compte Express Voitures"),
+            From = new EmailAddress("clementoss@gmail.com", "Confirmez la création de votre compte Express Voitures"),
             Subject = subject,
             PlainTextContent = message,
             HtmlContent = message
