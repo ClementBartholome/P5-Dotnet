@@ -25,7 +25,7 @@
             @foreach (var item in Model)
             {
                 <div class="card" style="width: 20rem;">
-                    <img class="card-img-top" src="@item.PhotoFilePath" alt="Image de l'annonce" style="object-fit: cover; height: 200px">
+                    <img class="card-img-top h-100" src="@item.PhotoFilePath" alt="Image de l'annonce" style="object-fit: cover !important;">
                     <div class="card-body">
                         <h5 class="card-title body-highlight">@Html.DisplayFor(modelItem => item.VoitureMarque) @Html.DisplayFor(modelItem => item.VoitureModele)</h5>
                         <p class="card-text">@Html.DisplayFor(modelItem => item.VoitureAnnee)</p>
@@ -33,7 +33,6 @@
                     </div>
                     <hr/>
                     <p class="py-2 px-3 body-highlight">@Html.DisplayFor(modelItem => item.VoiturePrixFormatted)€</p>
-                    <hr/>
                     @if (User.HasClaim("Admin", "true"))
                     {
                         <div class="p-3 d-flex justify-content-between">

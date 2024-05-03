@@ -13,11 +13,11 @@
     --font-text: 'Montserrat', sans-serif;
 }
 
-/* Default */ 
+/* Default */
 
 html {
     font-size: var(--font-s);
-    
+
     @media (max-width: 768px) {
         font-size: var(--font-s-mobile);
     }
@@ -45,11 +45,14 @@ main {
     color: red;
 }
 
-
-
 a {
     text-decoration: none;
     color: var(--headline);
+    
+    &:hover {
+        text-decoration: none;
+        color: white;
+    }
 }
 
 h1, h2, h3, h4, h5, h6, p, hr {
@@ -84,13 +87,13 @@ h2 {
     cursor: pointer;
     transition: 0.3s;
     padding: .375rem .75rem;
-    
+
     a {
         color: white;
     }
-    
+
     &:hover {
-        opacity: 0.8;        
+        opacity: 0.8;
     }
 }
 
@@ -130,6 +133,7 @@ h2 {
     width: 1.2rem;
     height: 1.2rem;
 }
+
 
 /* Datatable */
 
@@ -181,7 +185,7 @@ th {
 
         font-weight: bold;
     }
-    
+
     .hero-text {
         font-size: var(--font-m);
         color: var(--headline);
@@ -214,13 +218,58 @@ th {
     background-color: var(--secondary);
 }
 
-
-
 td {
     height: 5rem;
 }
 
 /* Responsive */
+
+@media (max-width: 768px) {
+    h1, h2, h3, h4, h5, h6 {
+        font-size: var(--font-m-mobile);
+    }
+    
+    .px-5 {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+    
+    .row {
+        justify-content: center !important;
+    }
+
+
+    .col-lg-6.d-flex.flex-column.gap-4 {
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .m-auto.w-50.d-flex.flex-column.gap-3 {
+        width: 100% !important;
+    }
+
+    .headline-p {
+        font-size: var(--font-s-mobile);
+    }
+
+    .body-highlight, .body-highlight-m {
+        font-size: var(--font-s-mobile);
+    }
+
+    .hero {
+        .hero-heading {
+            font-size: var(--font-xl-mobile);
+        }
+
+        .hero-text {
+            font-size: var(--font-m-mobile);
+        }
+    }
+
+    .cta {
+        font-size: var(--font-s-mobile);
+    }
+}
 
 @media (max-width: 992px) {
     .nav-item {
@@ -232,14 +281,25 @@ td {
 @media (max-width: 768px) {
     .navbar {
         padding: 1rem 2rem;
+        @media (max-width: 576px) {
+            padding: 1rem 1rem;
+        }
+
+        .logo {
+            max-width: 60% !important;
+        }
     }
-    
+
+    .card-img-top {
+        object-fit: contain !important;
+    }
+
 
     .hero {
         .hero-heading {
             font-size: var(--font-xl-mobile);
         }
-        
+
         .hero-text {
             font-size: var(--font-m-mobile);
         }
@@ -248,7 +308,7 @@ td {
     .row {
         gap: 1rem;
     }
-    
+
     .cta {
         padding: 0.5rem 1rem;
         font-size: var(--font-s-mobile);
@@ -256,6 +316,6 @@ td {
 }
 
 @media (max-width: 576px) {
-    
+
 }
 
