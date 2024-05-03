@@ -14,6 +14,8 @@ public class VoitureViewModel
     public string CodeVin { get; set; }
 
     public string Marque { get; set; }
+    
+    [DisplayName("Modèle")]
     public string Modele { get; set; }
     public List<VoitureViewModel>? Voitures { get; set; }
     public List<SelectListItem>? Marques { get; set; }
@@ -42,7 +44,7 @@ public class VoitureViewModel
         get
         {
             decimal total = PrixAchat + CoutReparations + 500;
-            return total.ToString("N0");
+            return total.ToString("N", CultureInfo.GetCultureInfo("fr-FR"));
         }
     }
 
