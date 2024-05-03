@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Express_Voitures.ViewModels;
@@ -44,7 +43,7 @@ public class VoitureViewModel
         get
         {
             decimal total = PrixAchat + CoutReparations + 500;
-            return total.ToString("N", CultureInfo.GetCultureInfo("fr-FR"));
+            return total.ToString("N0");
         }
     }
 
