@@ -38,12 +38,12 @@ public class VoitureViewModel
     [DisplayName("Coût répa.")] public decimal CoutReparations { get; set; }
 
     [DisplayName("Prix vente")]
-    public string PrixVente
+    public decimal PrixVente
     {
         get
         {
             decimal total = PrixAchat + CoutReparations + 500;
-            return total.ToString("N0");
+            return total;
         }
     }
 

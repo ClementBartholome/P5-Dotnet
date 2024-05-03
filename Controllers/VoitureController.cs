@@ -122,7 +122,7 @@ namespace Express_Voitures.Controllers
                 if (voitureViewModel.Vendu)
                 {
                     voitureVente.DateVente = voitureViewModel.DateVente;
-                    voitureVente.PrixVente = decimal.Parse(voitureViewModel.PrixVente);
+                    voitureVente.PrixVente = voitureViewModel.PrixVente;
                     voitureVente.Vendu = voitureViewModel.Vendu;
                 }
             }
