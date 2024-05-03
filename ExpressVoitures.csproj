@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -6,7 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Express_Voitures</RootNamespace>
 <!--        <EnableDefaultContentItems>false</EnableDefaultContentItems>-->
-    </PropertyGroup>
+      <UserSecretsId>4269b9f4-395a-424f-855f-3ce1f8599c7c</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
@@ -24,6 +25,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+      <PackageReference Include="SendGrid" Version="9.29.3" />
       <PackageReference Include="X.PagedList.Mvc.Core" Version="9.1.2" />
     </ItemGroup>
 
