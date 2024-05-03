@@ -8,10 +8,18 @@
     <h2>Inventaire</h2>
     @if (User.HasClaim("Admin", "true"))
     {
-        <p class="button">
-            <i class="bi bi-plus"></i>
-            <a asp-action="Create">Ajouter une nouvelle voiture</a>
-        </p>
+        <div class="d-flex justify-content-between w-100">
+            <p class="button">
+                <i class="bi bi-plus"></i>
+                <a asp-action="Create">Ajouter une nouvelle voiture</a>
+            </p>
+            <div class="d-flex gap-2 align-items-center">
+                <p class="body-highlight">Base de données</p>
+                <a class="button" asp-controller="Marque" asp-action="Index">Marques</a>
+                <a class="button" asp-controller="Modele" asp-action="Index">Modèles</a>
+                <a class="button" asp-controller="Finition" asp-action="Index">Finitions</a>
+            </div>
+        </div>
     }
 </section>
 
