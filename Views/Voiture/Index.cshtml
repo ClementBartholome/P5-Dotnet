@@ -13,12 +13,12 @@
                 <i class="bi bi-plus"></i>
                 <a asp-action="Create">Ajouter une nouvelle voiture</a>
             </p>
-            <div class="d-flex gap-2 align-items-center">
-                <p class="body-highlight">Base de données</p>
-                <a class="button" asp-controller="Marque" asp-action="Index">Marques</a>
-                <a class="button" asp-controller="Modele" asp-action="Index">Modèles</a>
-                <a class="button" asp-controller="Finition" asp-action="Index">Finitions</a>
-            </div>
+            @* <div class="d-flex gap-2 align-items-center"> *@
+            @*     <p class="body-highlight">Base de données</p> *@
+            @*     <a class="button" asp-controller="Marque" asp-action="Index">Marques</a> *@
+            @*     <a class="button" asp-controller="Modele" asp-action="Index">Modèles</a> *@
+            @*     <a class="button" asp-controller="Finition" asp-action="Index">Finitions</a> *@
+            @* </div> *@
         </div>
     }
 </section>
@@ -174,8 +174,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addMarqueModalLabel">Ajouter une marque</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -200,8 +199,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addModeleModalLabel">Ajouter un modèle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -242,8 +240,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addFinitionModalLabel">Ajouter une finition</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -291,8 +288,8 @@
                 Voulez-vous vraiment supprimer cet élément ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-                <a id="deleteConfirm" class="btn btn-primary">Oui</a>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Non</button>
+                <a id="deleteConfirm" class="btn btn-danger">Oui</a>
             </div>
         </div>
     </div>
@@ -337,7 +334,7 @@
                 "processing":     "Traitement en cours...",
                 "search":         "Rechercher&nbsp;:",
                 "lengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
-                "info":           "Affichage des &eacute;lements _START_ &agrave; _END_ sur _TOTAL_ ",
+                "info":           "_END_ élément(s) trouvé(s) ",
                 "infoEmpty":      "Aucun &eacute;lement disponible",
                 "infoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
                 "infoPostFix":    "",

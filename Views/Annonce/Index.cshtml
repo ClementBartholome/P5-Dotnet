@@ -8,7 +8,7 @@
 
 <div class="container-sm">
 
-    <section class="d-flex align-items-center gap-3">
+    <section class="d-flex gap-3 align-items-center">
         <h2 class="me-4">Nos annonces</h2>
         @if (User.HasClaim("Admin", "true"))
         {
@@ -21,7 +21,7 @@
 
     @if (Model.Any())
     {
-        <section class="d-flex flex-wrap justify-content-start gap-4 mt-3 mb-3">
+        <section class="d-flex flex-wrap gap-4 mt-3 mb-3">
             @foreach (var item in Model)
             {
                 <div class="card" style="width: 20rem;">

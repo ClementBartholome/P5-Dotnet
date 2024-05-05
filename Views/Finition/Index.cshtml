@@ -1,15 +1,16 @@
 @model IEnumerable<Express_Voitures.Models.Finition>
 
 @{
-ViewData["Title"] = "Liste des finitions";
+    ViewData["Title"] = "Liste des finitions";
 }
 
 <div class="container-sm">
     <h1>Liste des finitions</h1>
 
-    <p>
-        <a asp-action="Create">Créer une nouvelle finition</a>
-    </p>
+    <button class="button">
+        <i class="bi bi-plus"></i>
+        <a asp-action="Create" class="button">Créer une nouvelle finition</a>
+    </button>
     <table class="table">
         <thead>
         <tr>
@@ -20,16 +21,17 @@ ViewData["Title"] = "Liste des finitions";
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
-            </td>
-        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                </td>
+            </tr>
         }
         </tbody>
     </table>

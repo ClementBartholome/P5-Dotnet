@@ -18,7 +18,7 @@
 html {
     font-size: var(--font-s);
 
-    @media (max-width: 768px) {
+    @media (max-width: 576px) {
         font-size: var(--font-s-mobile);
     }
 }
@@ -34,6 +34,7 @@ html {
 
 body {
     margin-bottom: 3rem;
+    background-color: #f5f7fa;
 }
 
 main {
@@ -48,7 +49,7 @@ main {
 a {
     text-decoration: none;
     color: var(--headline);
-    
+
     &:hover {
         text-decoration: none;
         color: white;
@@ -127,6 +128,47 @@ h2 {
 .page-link {
     color: var(--button);
 }
+.btn-primary {
+    background: var(--button);
+    border-color: var(--button);
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+        opacity: 0.8;
+        background-color: var(--button);
+        border-color: var(--button);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--button);
+    }
+
+    .btn-check:focus + .btn-primary, .btn-primary:focus {
+        color: #fff;
+        background-color: var(--button);
+        border-color: var(--button);
+    }
+}
+
+.form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--button);
+}
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: var(--secondary);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem var(--button);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--button);
+}
+
+.form-check-input:checked {
+    background-color: var(--button);
+    border-color: var(--button);
+}
 
 .edit {
     background: #198754;
@@ -138,9 +180,10 @@ h2 {
 /* Datatable */
 
 table.dataTable {
-    width: unset !important;
-    margin: 1rem !important;
     border-spacing: unset;
+    padding: 1rem !important;
+    max-width: 1920px;
+    font-size: 1rem !important;
 }
 
 .dt-length, .dt-info {
@@ -216,6 +259,7 @@ th {
 
 .banner {
     background-color: var(--secondary);
+    border-radius: 2rem;
 }
 
 td {
@@ -224,19 +268,34 @@ td {
 
 /* Responsive */
 
-@media (max-width: 768px) {
-    h1, h2, h3, h4, h5, h6 {
-        font-size: var(--font-m-mobile);
+@media (max-width: 992px) {
+
+    .nav-item {
+        margin-right: auto !important;
+        margin-left: 0 !important;
     }
-    
+    /* Container annonces */
+    .container-sm.d-flex.flex-column {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .d-flex.gap-3 {
+        justify-content: center;
+    }
+
+    /* Section cards annonces */
+    .d-flex.flex-wrap.gap-4.mt-3.mb-3 {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
     .px-5 {
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
-    
-    .row {
-        justify-content: center !important;
-    }
+
 
 
     .col-lg-6.d-flex.flex-column.gap-4 {
@@ -248,8 +307,43 @@ td {
         width: 100% !important;
     }
 
+    .navbar {
+        padding: 1rem 2rem;
+        @media (max-width: 576px) {
+            padding: 1rem 1rem;
+        }
+
+        .logo {
+            max-width: 80% !important;
+        }
+    }
+
+    .card-img-top {
+        object-fit: contain !important;
+    }
+
+    .row {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    h1, h2, h3, h4, h5, h6 {
+        font-size: var(--font-m-mobile);
+    }
+
     .headline-p {
         font-size: var(--font-s-mobile);
+    }
+    
+    .hero {
+        .hero-heading {
+            font-size: var(--font-xl-mobile);
+        }
+
+        .hero-text {
+            font-size: var(--font-m-mobile);
+        }
     }
 
     .body-highlight, .body-highlight-m {
@@ -269,53 +363,10 @@ td {
     .cta {
         font-size: var(--font-s-mobile);
     }
-}
-
-@media (max-width: 992px) {
-    .nav-item {
-        margin-right: auto !important;
-        margin-left: 0 !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar {
-        padding: 1rem 2rem;
-        @media (max-width: 576px) {
-            padding: 1rem 1rem;
-        }
-
-        .logo {
-            max-width: 60% !important;
-        }
-    }
-
-    .card-img-top {
-        object-fit: contain !important;
-    }
-
-
-    .hero {
-        .hero-heading {
-            font-size: var(--font-xl-mobile);
-        }
-
-        .hero-text {
-            font-size: var(--font-m-mobile);
-        }
-    }
-
-    .row {
-        gap: 1rem;
-    }
 
     .cta {
         padding: 0.5rem 1rem;
         font-size: var(--font-s-mobile);
     }
-}
-
-@media (max-width: 576px) {
-
 }
 
