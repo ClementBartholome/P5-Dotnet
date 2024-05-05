@@ -4,11 +4,11 @@
     ViewData["Title"] = "Inventaire";
 }
 
-<section class="d-flex align-items-center gap-5 px-3">
-    <h2>Inventaire</h2>
+<section class="d-flex gap-3 align-items-center mx-3">
+    <h2 class="me-4">Inventaire</h2>
     @if (User.HasClaim("Admin", "true"))
     {
-        <div class="d-flex justify-content-between w-100">
+        <div class="d-flex justify-content-between w-auto">
             <p class="button">
                 <i class="bi bi-plus"></i>
                 <a asp-action="Create">Ajouter une nouvelle voiture</a>
@@ -307,6 +307,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script>
         let isAdminElement = document.getElementById('isAdmin');
         let isAdmin = isAdminElement ? isAdminElement.value === 'True' : false;
@@ -326,14 +328,13 @@
             { targets: 12 },
             { targets: 13 }
         ];
-
-
-
+        
         let table = new DataTable('#cars-table', {
             paging: true,
             searching: true,
             info: true,
             lengthChange: true,
+            responsive: true,
             lengthMenu: [10, 25, 50, 100],
             pageLength: 10,
             order: [[1, 'asc']],
