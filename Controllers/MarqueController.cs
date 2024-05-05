@@ -2,16 +2,19 @@ using Express_Voitures.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Express_Voitures.Models;
+using Express_Voitures.Services;
 
 namespace Express_Voitures.Controllers
 {
     public class MarqueController : Controller
     {
         private readonly AppDbContext _context;
-
-        public MarqueController(AppDbContext context)
+        private readonly MarqueService _marqueService;
+        
+        public MarqueController(AppDbContext context, MarqueService marqueService)
         {
             _context = context;
+            _marqueService = marqueService;
         }
 
         // GET: Marque
@@ -53,6 +56,11 @@ namespace Express_Voitures.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_marqueService.MarqueExists(marque.Nom))
+                {
+                    TempData["ErrorMessage"] = "Une marque avec ce nom existe déjà.";
+                    return RedirectToAction("Index", "Voiture");
+                }   
                 _context.Add(marque);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Voiture");

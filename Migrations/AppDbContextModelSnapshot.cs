@@ -85,6 +85,24 @@ namespace Express_Voitures.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1dfb8544-4580-4963-8a7a-40f579d4d949",
+                            Email = "admin@expressvoitures.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "admin@expressvoitures.com",
+                            NormalizedUserName = "admin@expressvoitures.com",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAUv4OYtrh8t6/Hdv6z+oTqE6qMquATKboRXaM7i1msjlMes9MVYGD43h4koa0hpjw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@expressvoitures.com"
+                        });
                 });
 
             modelBuilder.Entity("Express_Voitures.Models.Annonce", b =>
@@ -182,17 +200,17 @@ namespace Express_Voitures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Annee")
+                    b.Property<int?>("Annee")
                         .HasColumnType("int");
 
                     b.Property<string>("CodeVin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("CoutReparations")
+                    b.Property<decimal?>("CoutReparations")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("DateAchat")
+                    b.Property<DateTime?>("DateAchat")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Disponible")
@@ -207,7 +225,7 @@ namespace Express_Voitures.Migrations
                     b.Property<int>("ModeleId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PrixAchat")
+                    b.Property<decimal?>("PrixAchat")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Reparations")
@@ -331,6 +349,15 @@ namespace Express_Voitures.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserClaims", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClaimType = "Admin",
+                            ClaimValue = "true",
+                            UserId = "1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>

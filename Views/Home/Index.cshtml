@@ -13,7 +13,7 @@
                 <a href="/Annonce" class="btn cta btn-lg btn-primary" >Toutes nos annonces</a>
             </div>
             <div class="col-lg-6 d-flex justify-content-center">
-                <img src="~/images/logo-xl.png" alt="Hero Express Voitures" class="img-fluid">
+                <img src="~/images/logo-xl-removebg-preview.png" alt="Hero Express Voitures" class="img-fluid">
             </div>
         </div>
     </div>
@@ -23,45 +23,52 @@
     <div class="container-sm px-5">
         <h2 class="gallery-heading mx-auto mb-3">Nos derniers modèles</h2>
         <div class="row">
-            @foreach (var annonce in Model)
+            @if (Model.Any())
             {
-                <div class="col-lg-4">
-                    <div class="card h-100">
-                        <img src="@annonce.PhotoFilePath" alt="Voiture 1" class="card-img-top img-fluid h-100">
-                        <div class="card-body">
-                            <p class="card-titlebody-highlight">@annonce.VoitureMarque @annonce.VoitureModele</p>
-                            <p class="card-text">@annonce.VoitureAnnee</p>
-                            <p class="body-highlight">@annonce.VoiturePrixFormatted €</p>
+                @foreach (var annonce in Model)
+                {
+                    <div class="col-lg-4">
+                        <div class="card h-100">
+                            <img src="@annonce.PhotoFilePath" alt="Voiture 1" class="card-img-top img-fluid h-100">
+                            <div class="card-body">
+                                <p class="card-title body-highlight">@annonce.VoitureMarque @annonce.VoitureModele</p>
+                                <p class="card-text">@annonce.VoitureAnnee</p>
+                                <p class="body-highlight">@annonce.VoiturePrixFormatted€</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">Aucun modèle n'est disponible pour le moment.</p>
             }
         </div>
     </div>
 </section>
 
-<section class="banner p-5 vw-100 d-flex text-center mb-5">
+<section class="banner p-5 d-flex text-center mb-5 mx-4">
     <div class="m-auto w-50 d-flex flex-column gap-3">
         <h3 class="body-highlight-m">Trouvez votre prochaine voiture !</h3>
         <p class="">Nous proposons une large gamme de voitures d'occasion de qualité. Que vous cherchiez une voiture économique, une voiture de sport, un SUV ou une citadine, nous avons ce qu'il vous faut.</p>
-        <div class="row">
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+        <div class="row gap-3">
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
                 <img src="~/images/renault-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Renault">
                 <p class="text-center">Renault</p>
             </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
                 <img src="~/images/peugeot-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Peugeot">
                 <p class="text-center">Peugeot</p>
             </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
                 <img src="~/images/mercedes-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Mercedes">
                 <p class="text-center">Mercedes</p>
             </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
                 <img src="~/images/ford-logo.png" class="card-img-top h-50 img-fluid" alt="Logo Ford">
                 <p class="text-center">Ford</p>
             </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem">
+            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
                 <img src="~/images/jeep-logo.png" class="card-img-top h-50 img-fluid" alt="Logo Jeep">
                 <p class="text-center">Jeep</p>
             </div>

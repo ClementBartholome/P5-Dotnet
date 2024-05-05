@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Express_Voitures.Models;
+using Express_Voitures.Services;
 
 namespace Express_Voitures.Controllers
 {
     public class FinitionController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly FinitionService _finitionService;
 
-        public FinitionController(AppDbContext context)
+        public FinitionController(AppDbContext context, FinitionService finitionService)
         {
             _context = context;
+            _finitionService = finitionService;
         }
 
         // GET: Finition
@@ -57,6 +60,11 @@ namespace Express_Voitures.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_finitionService.FinitionExists(finition.Nom, finition.ModeleId))
+                {
+                    TempData["ErrorMessage"] = "Une finition avec ce nom existe déjà pour ce modèle.";
+                    return RedirectToAction("Index", "Voiture");
+                }
                 _context.Add(finition);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Voiture");

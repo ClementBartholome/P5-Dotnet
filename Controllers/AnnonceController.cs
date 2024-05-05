@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Express_Voitures.Services;
@@ -11,11 +12,14 @@ namespace Express_Voitures.Controllers
     {
         private readonly VoitureService _voitureService;
         private readonly AnnonceService _annonceService;
+        private readonly IConfiguration _configuration;
 
-        public AnnonceController(VoitureService voitureService, AnnonceService annonceService)
+
+        public AnnonceController(VoitureService voitureService, AnnonceService annonceService, IConfiguration configuration)
         {
             _voitureService = voitureService;
             _annonceService = annonceService;
+            _configuration = configuration;
         }
 
         // GET: Annonce
@@ -95,13 +99,21 @@ namespace Express_Voitures.Controllers
                 }
 
                 var fileName = Path.GetFileName(viewModel.UploadedImage?.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using (var stream = System.IO.File.Create(filePath))
+
+                var blobServiceClient = new BlobServiceClient(_configuration.GetConnectionString("AzureBlobStorage"));
+
+                var containerClient = blobServiceClient.GetBlobContainerClient("images");
+
+                var blobClient = containerClient.GetBlobClient(fileName);
+
+                using (var stream = viewModel.UploadedImage.OpenReadStream())
                 {
-                    await viewModel.UploadedImage?.CopyToAsync(stream)!;
+                    await blobClient.UploadAsync(stream, overwrite: true);
                 }
 
-                await _annonceService.CreateAnnonce(viewModel, "/images/" + fileName);
+                var blobUri = blobClient.Uri.AbsoluteUri;
+
+                await _annonceService.CreateAnnonce(viewModel, blobUri);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -149,16 +161,38 @@ namespace Express_Voitures.Controllers
             if (!ModelState.IsValid) return View(viewModel);
             try
             {
+                var existingAnnonce = await _annonceService.GetAnnonceById(id);
+                if (existingAnnonce == null)
+                {
+                    return NotFound();
+                }
+                
                 if (viewModel.UploadedImage != null)
                 {
                     var fileName = Path.GetFileName(viewModel.UploadedImage.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                    using (var stream = System.IO.File.Create(filePath))
+
+                    var blobServiceClient = new BlobServiceClient(_configuration.GetConnectionString("AzureBlobStorage"));
+
+                    var containerClient = blobServiceClient.GetBlobContainerClient("images");
+
+                    // Delete the existing image from the blob
+                    if (!string.IsNullOrEmpty(existingAnnonce.PhotoFilePath))
                     {
-                        await viewModel.UploadedImage.CopyToAsync(stream);
+                        var existingBlobName = Path.GetFileName(new Uri(existingAnnonce.PhotoFilePath).LocalPath);
+                        var existingBlobClient = containerClient.GetBlobClient(existingBlobName);
+                        await existingBlobClient.DeleteIfExistsAsync();
                     }
 
-                    await _annonceService.UpdateAnnonce(viewModel, "/images/" + fileName);
+                    // Upload the new image to the blob
+                    var blobClient = containerClient.GetBlobClient(fileName);
+                    using (var stream = viewModel.UploadedImage.OpenReadStream())
+                    {
+                        await blobClient.UploadAsync(stream, overwrite: true);
+                    }
+
+                    var blobUri = blobClient.Uri.AbsoluteUri;
+
+                    await _annonceService.UpdateAnnonce(viewModel, blobUri);
                 }
                 else
                 {
@@ -213,18 +247,18 @@ namespace Express_Voitures.Controllers
         {
             var annonce = await _annonceService.GetAnnonceById(id);
             if (annonce == null) return RedirectToAction(nameof(Index));
-            // Get the full path of the image
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",
-                annonce.PhotoFilePath.TrimStart('/'));
 
-            // Check if the file exists and delete it
-            if (System.IO.File.Exists(imagePath))
-            {
-                System.IO.File.Delete(imagePath);
-            }
+            var blobServiceClient = new BlobServiceClient(_configuration.GetConnectionString("AzureBlobStorage"));
+
+            var containerClient = blobServiceClient.GetBlobContainerClient("images");
+
+            var blobName = Path.GetFileName(new Uri(annonce.PhotoFilePath).LocalPath);
+
+            var blobClient = containerClient.GetBlobClient(blobName);
+
+            await blobClient.DeleteIfExistsAsync();
 
             await _annonceService.DeleteAnnonce(annonce);
-
 
             return RedirectToAction(nameof(Index));
         }

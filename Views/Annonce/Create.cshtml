@@ -14,19 +14,19 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group required mb-4">
                     <label asp-for="VoitureId" class="control-label"></label>
-                    <select asp-for="VoitureId" class="form-control">
                         @if (Model.Voitures != null && Model.Voitures.Any())
                         {
+                            <select asp-for="VoitureId" class="form-control">
                             @foreach (var voiture in Model.Voitures)
                             {
                                 <option value="@voiture.Value">@voiture.Text</option>
                             }
+                            </select>
                         }
                         else
                         {
-                            <option>Pas de voitures disponibles</option>
+                            <p class="text-danger">Aucune voiture n'est disponible. Veuillez en ajouter une avant de créer une annonce.</p>
                         }
-                    </select>
                 </div>
                 <div class="form-group required mb-4">
                     <label asp-for="Description" class="control-label"></label>
@@ -39,8 +39,15 @@
                     <span asp-validation-for="PhotoFilePath" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <a asp-action="Index" class="btn btn-danger">Annuler</a>
-                    <input type="submit" value="Sauvegarder" class="btn btn-primary"/>
+                    <a asp-action="Index" class="btn btn-outline-danger">Annuler</a>
+                    @if (Model.Voitures != null && Model.Voitures.Any())
+                    {
+                        <input type="submit" value="Sauvegarder" class="btn btn-primary"/>
+                    } 
+                    else
+                    {
+                        <input type="submit" value="Sauvegarder" class="btn btn-primary disabled" aria-disabled="true" disabled/>
+                    }
                 </div>
             </form>
         </div>

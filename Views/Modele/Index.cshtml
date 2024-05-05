@@ -1,16 +1,18 @@
 @model IEnumerable<Express_Voitures.Models.Modele>
 
 @{
-    ViewData["Title"] = "Index";
+ViewData["Title"] = "Liste des modèles";
 }
 
-<h1>Index</h1>
+<div class="container-sm">
+    <h1>Liste des modèles</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+    <button class="button">
+        <i class="bi bi-plus"></i>
+        <a asp-action="Create">Créer un nouveau modèle</a>
+    </button>
+    <table class="table">
+        <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Nom)
@@ -20,22 +22,22 @@
             </th>
             <th></th>
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+        </thead>
+        <tbody>
+        @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nom)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Marque.Id)
+                @Html.DisplayFor(modelItem => item.Marque.Nom)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
             </td>
         </tr>
-}
-    </tbody>
-</table>
+        }
+        </tbody>
+    </table>
+</div>

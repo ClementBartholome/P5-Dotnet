@@ -20,7 +20,7 @@
     <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light shadow mb-5">
         <div class="container-fluid">
             <a class="navbar-logo" asp-area="" asp-controller="Home" asp-action="Index">
-                <img class="img-fluid" src="~/images/logo-sm.jpg" alt="Logo Express Voitures">
+                <img class="img-fluid logo" src="~/images/logo-sm-Photoroom.png-Photoroom.png" alt="Logo Express Voitures">
             </a>
             <button class="navbar-toggler ms-lg-auto" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -29,13 +29,19 @@
             <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between ms-4">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
+                        <a class="nav-link @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door-fill"></i> Accueil
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Annonce" ? "active" : "")" asp-area="" asp-controller="Annonce" asp-action="Index">Annonces</a>
+                        <a class="nav-link @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Annonce" ? "active" : "")" asp-area="" asp-controller="Annonce" asp-action="Index">
+                            <i class="bi bi-card-list"></i> Annonces
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Voiture" ? "active" : "")" asp-area="" asp-controller="Voiture" asp-action="Index">Inventaire</a>
+                        <a class="nav-link  @(ActionContextAccessor.ActionContext?.RouteData.Values["controller"]?.ToString() == "Voiture" ? "active" : "")" asp-area="" asp-controller="Voiture" asp-action="Index">
+                            <i class="bi bi-car-front"></i> Inventaire
+                        </a>
                     </li>
                     @if (SignInManager.IsSignedIn(User))
                     {

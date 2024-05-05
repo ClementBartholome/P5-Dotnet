@@ -58,7 +58,7 @@
                 <div class="row mb-3">
                     <div class="col-md-4 form-group required">
                         <label asp-for="PrixAchat" class="control-label"></label>
-                        <input asp-for="PrixAchat" class="form-control"/>
+                        <input asp-for="PrixAchat" class="form-control" type="number" step="0.01"/>
                         <span asp-validation-for="PrixAchat" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 form-group required">
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col-md-4 form-group required">
                         <label asp-for="CoutReparations" class="control-label"></label>
-                        <input asp-for="CoutReparations" class="form-control"/>
+                        <input asp-for="CoutReparations" class="form-control" type="number" step="0.01"/>
                         <span asp-validation-for="CoutReparations" class="text-danger"></span>
                     </div>
                 </div>
@@ -99,17 +99,14 @@
                         <input asp-for="DateVente" class="form-control"/>
                         <span asp-validation-for="DateVente" class="text-danger"></span>
                     </div>
-
                 </div>
-
                 <div class="form-group">
-                    <a asp-action="Index" class="btn btn-danger">Annuler</a>
+                    <a asp-action="Index" class="btn btn-outline-danger">Annuler</a>
                     <input type="submit" value="Sauvegarder" class="btn btn-primary"/>
                 </div>
             </form>
         </div>
     </div>
-
 </div>
 
 @section Scripts {
@@ -178,36 +175,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const disponibleCheckbox = document.querySelector('input[name="Disponible"]');
     const dateDisponibiliteGroup = document.getElementById('dateDisponibiliteGroup');
-    
+
     disponibleCheckbox.addEventListener('change', function () {
-            if (this.checked) {
-                dateDisponibiliteGroup.style.display = 'block';
-            } else {
-                dateDisponibiliteGroup.style.display = 'none';
-            }
-    });   
-    
+        if (this.checked) {
+            dateDisponibiliteGroup.style.display = 'block';
+            venduCheckbox.checked = false;
+            dateVenteGroup.style.display = 'none';
+        } else {
+            dateDisponibiliteGroup.style.display = 'none';
+        }
+        });
+
     const venduCheckbox = document.querySelector('input[name="Vendu"]');
     const dateVenteGroup = document.getElementById('dateVenteGroup');
-
-    if (venduCheckbox.checked) {
-        dateVenteGroup.style.display = 'block';
-        disponibleCheckbox.disabled = true;
-    } else {
-        dateVenteGroup.style.display = 'none';
-    }
 
     venduCheckbox.addEventListener('change', function () {
         if (this.checked) {
             dateVenteGroup.style.display = 'block';
             disponibleCheckbox.checked = false;
-            disponibleCheckbox.disabled = true;
             dateDisponibiliteGroup.style.display = 'none';
         } else {
             dateVenteGroup.style.display = 'none';
-            disponibleCheckbox.disabled = false;
         }
-    });
+        });
 });
 </script>
 }

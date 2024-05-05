@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Express_Voitures.Models;
+using Express_Voitures.Services;
 using Express_Voitures.ViewModels;
 
 namespace Express_Voitures.Controllers
@@ -14,10 +15,12 @@ namespace Express_Voitures.Controllers
     public class ModeleController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ModeleService _modeleService;
 
-        public ModeleController(AppDbContext context)
+        public ModeleController(AppDbContext context, ModeleService modeleService)
         {
             _context = context;
+            _modeleService = modeleService;
         }
 
         // GET: Modele
@@ -61,6 +64,12 @@ namespace Express_Voitures.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_modeleService.ModeleExists(modeleViewModel.Nom, modeleViewModel.MarqueId))
+                {
+                    TempData["ErrorMessage"] = "Un modèle avec ce nom existe déjà pour cette marque.";
+                    return RedirectToAction("Index", "Voiture");
+                }
+                
                 var marque = _context.Marque.FirstOrDefault(m => m.Id == modeleViewModel.MarqueId);
                 var modele = new Modele
                 {

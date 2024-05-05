@@ -8,7 +8,7 @@
 
 <div class="container-sm">
 
-    <section class="d-flex align-items-center gap-3">
+    <section class="d-flex gap-3 align-items-center">
         <h2 class="me-4">Nos annonces</h2>
         @if (User.HasClaim("Admin", "true"))
         {
@@ -19,49 +19,55 @@
         }
     </section>
 
-    <section class="d-flex flex-wrap justify-content-start gap-4 mt-3 mb-3">
-        @foreach (var item in Model)
-        {
-            <div class="card" style="width: 20rem;">
-                <img class="card-img-top" src="@item.PhotoFilePath" alt="Image de l'annonce" style="object-fit: cover; height: 200px">
-                <div class="card-body">
-                    <h5 class="card-title body-highlight">@Html.DisplayFor(modelItem => item.VoitureMarque) @Html.DisplayFor(modelItem => item.VoitureModele)</h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.VoitureAnnee)</p>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                </div>
-                <hr/>
-                <p class="py-2 px-3 body-highlight">@Html.DisplayFor(modelItem => item.VoiturePrixFormatted)€</p>
-                <hr/>
-                @if (User.HasClaim("Admin", "true"))
-                {
-                    <div class="p-3 d-flex justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">
-                            <i class="bi bi-pencil-square" style="color:white;"></i>
-                        </a>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
-                            <i class="bi bi-trash" style="color:white;"></i>
-                        </button>
-                        <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
+    @if (Model.Any())
+    {
+        <section class="d-flex flex-wrap gap-4 mt-3 mb-3">
+            @foreach (var item in Model)
+            {
+                <div class="card" style="width: 20rem;">
+                    <img class="card-img-top h-100" src="@item.PhotoFilePath" alt="Image de l'annonce" style="object-fit: cover !important;">
+                    <div class="card-body">
+                        <h5 class="card-title body-highlight">@Html.DisplayFor(modelItem => item.VoitureMarque) @Html.DisplayFor(modelItem => item.VoitureModele)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.VoitureAnnee)</p>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
                     </div>
-                }
-            </div>
-        }
-    </section>
+                    <hr/>
+                    <p class="py-2 px-3 body-highlight">@Html.DisplayFor(modelItem => item.VoiturePrixFormatted)€</p>
+                    @if (User.HasClaim("Admin", "true"))
+                    {
+                        <div class="p-3 d-flex justify-content-between">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">
+                                <i class="bi bi-pencil-square" style="color:white;"></i>
+                            </a>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                <i class="bi bi-trash" style="color:white;"></i>
+                            </button>
+                            <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
 
-    <div class="m-auto">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
-        {
-            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-            DisplayLinkToLastPage = PagedListDisplayMode.Always,
-            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-            DisplayLinkToNextPage = PagedListDisplayMode.Always,
-            DisplayLinkToIndividualPages = true,
-            MaximumPageNumbersToDisplay = 5,
-            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
-            LinkToIndividualPageFormat = "{0}",
-            EllipsesFormat = "...",
-        })
-    </div>
+        <div class="m-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                LinkToIndividualPageFormat = "{0}",
+                EllipsesFormat = "...",
+            })
+        </div>
+
+    } else
+    {
+        <p>Aucune annonce n'est actuellement en ligne.</p>
+    }
 
 </div>
 

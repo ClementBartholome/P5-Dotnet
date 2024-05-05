@@ -21,15 +21,12 @@
                     </div>
                     <div class="col-md-4 form-group required">
                         <label asp-for="Marque" class="control-label"></label>
-                        <select id="marqueSelect" asp-for="Marque" class="form-control" asp-items="ViewBag.Marques">
-                            <option selected value="@Model.Marque">@Model.Marque</option>
-                        </select>
+                        <select id="marqueSelect" asp-for="Marque" class="form-control" asp-items="ViewBag.Marques"></select>
                         <span asp-validation-for="Marque" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 form-group required">
                         <label asp-for="Modele" class="control-label"></label>
                         <select id="modeleSelect" asp-for="Modele" class="form-control">
-                            <option selected value="@Model.Modele">@Model.Modele</option>
                         </select>
                         <span asp-validation-for="Modele" class="text-danger"></span>
                     </div>
@@ -39,7 +36,6 @@
                     <div class="col-md-4 form-group required">
                         <label asp-for="Finition" class="control-label"></label>
                         <select id="finitionSelect" asp-for="Finition" class="form-control">
-                            <option selected value="@Model.Finition">@Model.Finition</option>
                         </select>
                         <span asp-validation-for="Finition" class="text-danger"></span>
                     </div>
@@ -118,6 +114,40 @@ document.addEventListener('DOMContentLoaded', function () {
     const modeleSelect = document.getElementById('modeleSelect');
     const finitionSelect = document.getElementById('finitionSelect');
 
+    const marque = '@Model.Marque';
+
+    for (let i = 0; i < marqueSelect.options.length; i++) {
+        if (marqueSelect.options[i].text === marque) {
+            marqueSelect.selectedIndex = i;
+            break;
+        }
+    }
+
+    setTimeout(function () {
+        marqueSelect.dispatchEvent(new Event('change'));
+
+        setTimeout(function () {
+            const modele = '@Model.Modele';
+            for (let i = 0; i < modeleSelect.options.length; i++) {
+                if (modeleSelect.options[i].text === modele) {
+                    modeleSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            modeleSelect.dispatchEvent(new Event('change'));
+
+            setTimeout(function () {
+                const finition = '@Model.Finition';
+                for (let i = 0; i < finitionSelect.options.length; i++) {
+                    if (finitionSelect.options[i].text === finition) {
+                        finitionSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }, 0);
+        }, 0);
+    }, 0);
 
     marqueSelect.addEventListener('change', function () {
         let marqueId = this.value;
@@ -173,23 +203,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const disponibleCheckbox = document.querySelector('input[name="Disponible"]');
     const dateDisponibiliteGroup = document.getElementById('dateDisponibiliteGroup');
-    
+
     if (disponibleCheckbox.checked) {
             dateDisponibiliteGroup.style.display = 'block';
         } else {
             dateDisponibiliteGroup.style.display = 'none';
         }
     disponibleCheckbox.addEventListener('change', function () {
-        if (this.checked) {   
+        if (this.checked) {
             dateDisponibiliteGroup.style.display = 'block';
         } else {
-            dateDisponibiliteGroup.style.display = 'none';     
+            dateDisponibiliteGroup.style.display = 'none';
         }
-    });   
-        
+    });
+
     const venduCheckbox = document.querySelector('input[name="Vendu"]');
     const dateVenteGroup = document.getElementById('dateVenteGroup');
-       
+
     if (venduCheckbox.checked) {
         dateVenteGroup.style.display = 'block';
         disponibleCheckbox.disabled = true;
