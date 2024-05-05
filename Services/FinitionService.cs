@@ -29,8 +29,8 @@ public class FinitionService
         return _context.Finition.FirstOrDefault(f => f.Id == id);
     }
     
-    public bool FinitionExists(string finitionNom)
+    public bool FinitionExists(string nom, int modeleId)
     {
-        return _context.Finition.Any(f => f.Nom == finitionNom);
+        return _context.Finition.Any(f => f.Nom == nom && f.ModeleId == modeleId);
     }
 }
