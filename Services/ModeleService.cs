@@ -28,4 +28,9 @@ public class ModeleService
     {
         return _context.Modele.FirstOrDefault(m => m.Id == id);
     }
+    
+    public bool ModeleExists(string nom, int marqueId)
+    {
+        return _context.Modele.Any(m => m.Nom == nom && m.MarqueId == marqueId);
+    }
 }

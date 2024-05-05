@@ -62,7 +62,7 @@ namespace Express_Voitures.Controllers
             {
                 if (_finitionService.FinitionExists(finition.Nom, finition.ModeleId))
                 {
-                    ModelState.AddModelError("Nom", "Une Finition avec ce nom existe déjà pour ce modèle.");
+                    TempData["ErrorMessage"] = "Une finition avec ce nom existe déjà pour ce modèle.";
                     return RedirectToAction("Index", "Voiture");
                 }
                 _context.Add(finition);

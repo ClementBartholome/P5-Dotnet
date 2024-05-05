@@ -58,8 +58,8 @@ namespace Express_Voitures.Controllers
             {
                 if (_marqueService.MarqueExists(marque.Nom))
                 {
-                    ModelState.AddModelError("Nom", "Cette marque existe déjà");
-                    return View(marque);
+                    TempData["ErrorMessage"] = "Une marque avec ce nom existe déjà.";
+                    return RedirectToAction("Index", "Voiture");
                 }   
                 _context.Add(marque);
                 await _context.SaveChangesAsync();
