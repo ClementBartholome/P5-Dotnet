@@ -68,22 +68,23 @@ namespace Express_Voitures.Controllers
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create(VoitureViewModel voitureViewModel)
         {
-            if (ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                var isVinUnique = await _voitureService.IsVinUnique(voitureViewModel.CodeVin);
-                    
-                if (!isVinUnique)
-                {
-                    ModelState.AddModelError("CodeVin", "Ce Code VIN est déjà utilisé");
-                    await FillViewBag();
-                    return View(voitureViewModel);
-                }
-                
-                _voitureService.CreateOrUpdateVoiture(voitureViewModel);
-                return RedirectToAction(nameof(Index));
+                await FillViewBag();
+                return View(voitureViewModel);
             }
 
-            return View(voitureViewModel);
+            var isVinUnique = await _voitureService.IsVinUnique(voitureViewModel.CodeVin);
+                    
+            if (!isVinUnique)
+            {
+                ModelState.AddModelError("CodeVin", "Ce Code VIN est déjà utilisé");
+                await FillViewBag();
+                return View(voitureViewModel);
+            }
+                
+            _voitureService.CreateOrUpdateVoiture(voitureViewModel);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Voiture/Edit/5
