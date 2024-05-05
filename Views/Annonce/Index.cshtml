@@ -8,8 +8,8 @@
 
 <div class="container-sm">
 
-    <section class="d-flex gap-3 align-items-center">
-        <h2 class="me-4">Nos annonces</h2>
+    <section class="d-flex gap-5 align-items-center">
+        <h2>Nos annonces</h2>
         @if (User.HasClaim("Admin", "true"))
         {
             <p class="button">
@@ -24,7 +24,7 @@
         <section class="d-flex flex-wrap gap-4 mt-3 mb-3">
             @foreach (var item in Model)
             {
-                <div class="card" style="width: 20rem;">
+                <div class="card">
                     <img class="card-img-top h-100" src="@item.PhotoFilePath" alt="Image de l'annonce" style="object-fit: cover !important;">
                     <div class="card-body">
                         <h5 class="card-title body-highlight">@Html.DisplayFor(modelItem => item.VoitureMarque) @Html.DisplayFor(modelItem => item.VoitureModele)</h5>
@@ -63,8 +63,8 @@
                 EllipsesFormat = "...",
             })
         </div>
-
-    } else
+    }
+    else
     {
         <p>Aucune annonce n'est actuellement en ligne.</p>
     }
@@ -126,3 +126,4 @@
         });
     </script>
 }
+
