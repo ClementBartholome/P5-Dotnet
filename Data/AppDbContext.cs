@@ -27,7 +27,7 @@ namespace Express_Voitures.Data
             {
                 Id = "1",
                 UserName = "admin@expressvoitures.com",
-                NormalizedUserName = "ADMIN",
+                NormalizedUserName = "admin@expressvoitures.com",
                 Email = "admin@expressvoitures.com",
                 NormalizedEmail = "admin@expressvoitures.com",
                 EmailConfirmed = true,
