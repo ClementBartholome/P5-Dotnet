@@ -10,10 +10,10 @@
         public int ModeleId { get; set; }
         public int FinitionId { get; set; }
         public string Reparations { get; set; }
-        public decimal CoutReparations { get; set; }
-        public int Annee { get; set; }
-        public DateTime DateAchat { get; set; }
-        public decimal PrixAchat { get; set; }
+        public decimal? CoutReparations { get; set; }
+        public int? Annee { get; set; }
+        public DateTime? DateAchat { get; set; }
+        public decimal? PrixAchat { get; set; }
         public bool Disponible { get; set; }
 
         // Propriétés de navigation
