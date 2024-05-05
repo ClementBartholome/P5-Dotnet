@@ -5,18 +5,28 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item  ms-auto">
-        <a class="nav-link btn" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gérer mon compte">
-            <i class="bi bi-person-fill"></i>
-            <p class="d-inline">Mon compte</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <form class="form-inline" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
-              asp-area="Identity" method="post">
-            <button class="nav-link btn" type="submit"><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
-        </form>
-    </li>
+<li class="nav-item dropdown ms-auto">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-person-fill"></i>
+        <p class="d-inline">Mon compte</p>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li>
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gérer mon compte">
+                Gérer mon compte
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <form class="dropdown-item" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                  asp-area="Identity" method="post">
+                <button class="btn" type="submit"><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
+            </form>
+        </li>
+    </ul>
+</li>
 }
 else
 {
