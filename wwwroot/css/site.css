@@ -130,10 +130,18 @@ h2 {
 }
 
 .card {
-    width: 20rem;
-    
+    max-width: 20rem;
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+
     @media (max-width: 992px) {
-        width: 100%;
+        max-width: 100%;
+    }
+    
+    .card-img-top {
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 }
 
@@ -188,6 +196,11 @@ h2 {
 
 /* Datatable */
 
+.inventaire .card {
+    max-width: 100%;
+    background-color: white;
+}
+
 table.dataTable {
     border-spacing: unset;
     padding: 1rem !important;
@@ -215,7 +228,14 @@ th {
 
 .navbar {
     padding: 1rem 8rem;
+    
+    @media (max-width: 1205px){
+        padding: 1rem 3rem;
+    }
+}
 
+.logo {
+    min-width: 180px;
 }
 
 .nav-item {
@@ -283,6 +303,10 @@ td {
 
 @media (max-width: 992px) {
 
+    .row {
+        gap: 1rem;
+    }
+
     .nav-item {
         margin-right: auto !important;
         margin-left: 0 !important;
@@ -301,6 +325,10 @@ td {
     .d-flex.flex-wrap.gap-4.mt-3.mb-3 {
         justify-content: center;
     }
+    
+    .services .container-sm .row {
+        gap: 1rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -308,8 +336,6 @@ td {
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
-
-
 
     .col-lg-6.d-flex.flex-column.gap-4 {
         align-items: center !important;
@@ -333,10 +359,6 @@ td {
 
     .card-img-top {
         object-fit: contain !important;
-    }
-
-    .row {
-        gap: 1rem;
     }
 }
 
