@@ -186,6 +186,10 @@ table.dataTable {
     font-size: 1rem !important;
 }
 
+#cars-table_wrapper {
+    overflow-x: auto;
+}
+
 .dt-length, .dt-info {
     margin-left: 1rem !important;
 }
@@ -358,6 +362,11 @@ td {
         .hero-text {
             font-size: var(--font-m-mobile);
         }
+    }
+
+    section.d-flex.gap-3.align-items-center {
+        flex-direction: column;
+        justify-content: center;
     }
 
     .cta {
