@@ -30,7 +30,7 @@ public class VoitureViewModel
     public string Finition { get; set; }
 
     [Required(ErrorMessage = "L'année est obligatoire.")]
-    [Range(1990, int.MaxValue, ErrorMessage = "Veuillez entrer une année valide.")]
+    [Range(1990, int.MaxValue, ErrorMessage = "L'année ne peut pas être antérieure à 1990.")]
     [DisplayName("Année")]
     public int? Annee { get; set; }
 
