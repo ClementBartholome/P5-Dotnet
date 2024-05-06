@@ -48,6 +48,7 @@ public class VoitureViewModel
     public bool Disponible { get; set; }
 
     [Required(ErrorMessage = "La description des réparations est obligatoire.")]
+    [StringLength(200, ErrorMessage = "La description des réparations ne peut pas dépasser 200 caractères.")]
     [DisplayName("Réparations")]
     public string Reparations { get; set; }
 

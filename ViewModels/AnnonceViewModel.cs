@@ -13,6 +13,7 @@ namespace Express_Voitures.ViewModels
         public int VoitureId { get; set; }
 
         [Required(ErrorMessage = "La description est obligatoire.")]
+        [StringLength(400, ErrorMessage = "La description ne peut pas dépasser 400 caractères.")]
         public string Description { get; set; }
 
         [DisplayName("Photo")]
