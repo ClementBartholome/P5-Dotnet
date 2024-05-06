@@ -134,6 +134,7 @@ h2 {
     width: 100%;
     border-radius: 12px;
     border: none;
+    overflow: hidden;
 
     @media (max-width: 992px) {
         max-width: 100%;
@@ -310,6 +311,28 @@ td {
     height: 5rem;
 }
 
+/* Animations */
+
+.zoom {
+    transition: transform .2s; /* Animation */
+}
+
+.zoom:hover {
+    transform: scale(1.1); 
+}
+
+
+.logo-container {
+    display: flex;
+    animation: slide 20s linear infinite;
+    width: 200%; 
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+}
+
 /* Responsive */
 
 @media (max-width: 992px) {
@@ -319,7 +342,8 @@ td {
     }
     
     .banner > div {
-        width: 75% !important;
+        width: 100% !important;
+        margin: 1rem !important;
     }
 
     .nav-item {
@@ -347,9 +371,14 @@ td {
 }
 
 @media (max-width: 768px) {
-    .px-5 {
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+    .px-5,.p-5 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    .mx-4 {
+        margin-right: 1rem !important;
+        margin-left: 1rem !important;
     }
 
     .col-lg-6.d-flex.flex-column.gap-4 {
