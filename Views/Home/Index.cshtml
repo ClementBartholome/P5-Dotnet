@@ -10,7 +10,7 @@
             <div class="col-lg-6 d-flex flex-column gap-4 align-items-baseline">
                 <h1 class="hero-heading" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Express Voitures</h1>
                 <p class="hero-text" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);">Les voitures d'occasion au <span class="body-highlight-purple">meilleur prix</span></p>
-                <a href="/Annonce" class="btn cta btn-lg btn-primary" >Toutes nos annonces</a>
+                <a href="/Annonce" class="btn cta btn-lg btn-primary">Toutes nos annonces</a>
             </div>
             <div class="col-lg-6 d-flex justify-content-center">
                 <img src="~/images/logo-xl-removebg-preview.png" alt="Hero Express Voitures" class="img-fluid">
@@ -28,8 +28,10 @@
                 @foreach (var annonce in Model)
                 {
                     <div class="col-lg-4">
-                        <div class="card h-100">
-                            <img src="@annonce.PhotoFilePath" alt="Voiture 1" class="card-img-top img-fluid h-100">
+                        <div class="card">
+                            <a href="/Annonce">
+                                <img src="@annonce.PhotoFilePath" alt="Voiture 1" class="card-img-top img-fluid h-100 zoom">
+                            </a>
                             <div class="card-body">
                                 <p class="card-title body-highlight">@annonce.VoitureMarque @annonce.VoitureModele</p>
                                 <p class="card-text">@annonce.VoitureAnnee</p>
@@ -48,30 +50,23 @@
 </section>
 
 <section class="banner p-5 d-flex text-center mb-5 mx-4">
-    <div class="m-auto w-50 d-flex flex-column gap-3">
+    <div class="m-auto w-50 d-flex flex-column gap-3 overflow-hidden">
         <h3 class="body-highlight-m">Trouvez votre prochaine voiture !</h3>
         <p class="">Nous proposons une large gamme de voitures d'occasion de qualité. Que vous cherchiez une voiture économique, une voiture de sport, un SUV ou une citadine, nous avons ce qu'il vous faut.</p>
-        <div class="row gap-3">
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
-                <img src="~/images/renault-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Renault">
-                <p class="text-center">Renault</p>
-            </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
-                <img src="~/images/peugeot-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Peugeot">
-                <p class="text-center">Peugeot</p>
-            </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
-                <img src="~/images/mercedes-logo.svg" class="card-img-top h-50 img-fluid" alt="Logo Mercedes">
-                <p class="text-center">Mercedes</p>
-            </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
-                <img src="~/images/ford-logo.png" class="card-img-top h-50 img-fluid" alt="Logo Ford">
-                <p class="text-center">Ford</p>
-            </div>
-            <div class="col-sm-2 d-flex flex-column justify-content-center me-3 bg-white rounded shadow-lg" style="height: 5rem; min-width: 5rem;">
-                <img src="~/images/jeep-logo.png" class="card-img-top h-50 img-fluid" alt="Logo Jeep">
-                <p class="text-center">Jeep</p>
-            </div>
+        <div class="logo-container gap-5">
+            <div> <img src="~/images/renault-logo.svg" alt="Logo Renault" style="height: 5rem"></img> Renault </div>
+            <div> <img src="~/images/peugeot-logo.svg" alt="Logo Peugeot" style="height: 5rem"></img> Peugeot </div>
+            <div> <img src="~/images/mercedes-logo.svg" alt="Logo Mercedes" style="height: 5rem"></img> Mercedes </div>
+            <div> <img src="~/images/ford-logo.png" alt="Logo Ford" style="height: 5rem"></img> Ford </div>
+            <div> <img src="~/images/jeep-logo.png" alt="Logo Jeep" style="height: 5rem"></img> Jeep</div>
+            <div> <img src="~/images/mazda-logo.png" alt="Logo Mazda" style="height: 5rem"></img> Mazda</div>
+            <!-- Duplication des logos -->
+            <div> <img src="~/images/renault-logo.svg" alt="Logo Renault" style="height: 5rem"></img> Renault </div>
+            <div> <img src="~/images/peugeot-logo.svg" alt="Logo Peugeot" style="height: 5rem"></img> Peugeot </div>
+            <div> <img src="~/images/mercedes-logo.svg" alt="Logo Mercedes" style="height: 5rem"></img> Mercedes </div>
+            <div> <img src="~/images/ford-logo.png" alt="Logo Ford" style="height: 5rem"></img> Ford </div>
+            <div> <img src="~/images/jeep-logo.png" alt="Logo Jeep" style="height: 5rem"></img> Jeep</div>
+            <div> <img src="~/images/mazda-logo.png" alt="Logo Mazda" style="height: 5rem"></img> Mazda</div>
         </div>
         <a href="/Annonce" class="btn cta btn-lg btn-primary align-self-center">Toutes nos annonces</a>
     </div>
@@ -115,7 +110,9 @@
 <section class="contact mb-5">
     <div class="container-sm px-5">
         <h2 class="gallery-heading mx-auto mb-3">Contactez-nous</h2>
-        <p class="text-center">Vous souhaitez nous poser une question, nous faire un feedback, ou tout simplement nous contacter ?<br/>
-            Écrivez-nous à <span class="body-highlight-purple">express.voitures@gmail.com</span> ou appelez-nous au <span class="body-highlight-purple">01 02 03 04 05</span></p>
+        <p class="text-center">
+            Vous souhaitez nous poser une question, nous faire un feedback, ou tout simplement nous contacter ?<br/>
+            Écrivez-nous à <span class="body-highlight-purple">express.voitures@gmail.com</span> ou appelez-nous au <span class="body-highlight-purple">01 02 03 04 05</span>
+        </p>
     </div>
 </section>

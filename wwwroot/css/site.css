@@ -128,6 +128,34 @@ h2 {
 .page-link {
     color: var(--button);
 }
+
+.card {
+    max-width: 20rem;
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+    overflow: hidden;
+
+    @media (max-width: 992px) {
+        max-width: 100%;
+    }
+    
+    .card-img-top {
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        height: 200px !important;
+        object-fit: cover;
+        
+        @media (max-width: 992px) {
+            height: 280px !important;
+        }
+        
+        @media (max-width: 578px) {
+            height: 160px !important;
+        }
+    }
+}
+
 .btn-primary {
     background: var(--button);
     border-color: var(--button);
@@ -179,11 +207,17 @@ h2 {
 
 /* Datatable */
 
+.inventaire .card {
+    max-width: 100%;
+    background-color: white;
+    padding: 1rem;
+}
+
 table.dataTable {
     border-spacing: unset;
     padding: 1rem !important;
     max-width: 1920px;
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
 }
 
 #cars-table_wrapper {
@@ -206,7 +240,14 @@ th {
 
 .navbar {
     padding: 1rem 8rem;
+    
+    @media (max-width: 1205px){
+        padding: 1rem 3rem;
+    }
+}
 
+.logo {
+    min-width: 180px;
 }
 
 .nav-item {
@@ -270,9 +311,40 @@ td {
     height: 5rem;
 }
 
+/* Animations */
+
+.zoom {
+    transition: transform .2s; /* Animation */
+}
+
+.zoom:hover {
+    transform: scale(1.1); 
+}
+
+
+.logo-container {
+    display: flex;
+    animation: slide 20s linear infinite;
+    width: 200%; 
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+}
+
 /* Responsive */
 
 @media (max-width: 992px) {
+
+    .row {
+        gap: 1rem;
+    }
+    
+    .banner > div {
+        width: 100% !important;
+        margin: 1rem !important;
+    }
 
     .nav-item {
         margin-right: auto !important;
@@ -284,7 +356,7 @@ td {
         align-items: center;
     }
 
-    .d-flex.gap-3 {
+    .d-flex.gap-5 {
         justify-content: center;
     }
 
@@ -292,15 +364,22 @@ td {
     .d-flex.flex-wrap.gap-4.mt-3.mb-3 {
         justify-content: center;
     }
+    
+    .services .container-sm .row {
+        gap: 1rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .px-5 {
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+    .px-5,.p-5 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
-
-
+    
+    .mx-4 {
+        margin-right: 1rem !important;
+        margin-left: 1rem !important;
+    }
 
     .col-lg-6.d-flex.flex-column.gap-4 {
         align-items: center !important;
@@ -322,12 +401,8 @@ td {
         }
     }
 
-    .card-img-top {
+    .banner .card-img-top {
         object-fit: contain !important;
-    }
-
-    .row {
-        gap: 1rem;
     }
 }
 
@@ -364,7 +439,7 @@ td {
         }
     }
 
-    section.d-flex.gap-3.align-items-center {
+    section.d-flex.gap-5.align-items-center {
         flex-direction: column;
         justify-content: center;
     }

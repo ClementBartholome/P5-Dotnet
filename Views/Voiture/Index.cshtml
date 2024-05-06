@@ -4,8 +4,8 @@
     ViewData["Title"] = "Inventaire";
 }
 
-<section class="d-flex gap-3 align-items-center mx-3">
-    <h2 class="me-4">Inventaire</h2>
+<section class="d-flex gap-5 align-items-center mx-3">
+    <h2>Inventaire</h2>
     @if (User.HasClaim("Admin", "true"))
     {
         <div class="d-flex justify-content-between w-auto">
@@ -23,158 +23,161 @@
     }
 </section>
 
-@{
-    if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger my-3">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-}
-
-<div class="card m-3">
-    <table id="cars-table" class="table table-striped table-bordered table-hover table-sm px-3" style="font-size: 0.8rem">
-        <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CodeVin)
-            </th>
-            <th>
-                <div class="d-flex align-items-center gap-1">
-                    @Html.DisplayNameFor(model => model.Marque)
-                    @if (User.HasClaim("Admin", "true"))
-                    {
-                        <button type="button" class="button ml-2" data-toggle="modal" data-target="#addMarqueModal">
-                            <i class="bi bi-plus"></i>
-                        </button>
-                    }
-                </div>
-            </th>
-            <th>
-                <div class="d-flex align-items-center gap-1">
-                    @Html.DisplayNameFor(model => model.Modele)
-                    @if (User.HasClaim("Admin", "true"))
-                    {
-                        <button type="button" class="button ml-2" data-toggle="modal" data-target="#addModeleModal">
-                            <i class="bi bi-plus"></i>
-                        </button>
-                    }
-                </div>
-            </th>
-            <th>
-                <div class="d-flex align-items-center gap-1">
-                    @Html.DisplayNameFor(model => model.Finition)
-                    @if (User.HasClaim("Admin", "true"))
-                    {
-                        <button type="button" class="button ml-2" data-toggle="modal" data-target="#addFinitionModal">
-                            <i class="bi bi-plus"></i>
-                        </button>
-                    }
-                </div>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Annee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateAchat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrixAchat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CoutReparations)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrixVente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Disponible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateDisponibilite)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vendu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateVente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reparations)
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @if (Model.Voitures.Any())
+<section class="inventaire m-3">
+    @{
+        if (TempData["ErrorMessage"] != null)
         {
-            @foreach (var item in Model.Voitures)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CodeVin)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Marque)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Modele)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Finition)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Annee)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateAchat)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PrixAchat)€
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CoutReparations)€
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PrixVente)€
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Disponible)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateDisponibilite)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vendu)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateVente)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Reparations)
-                    </td>
-                    <td>
+            <div class="alert alert-danger my-3">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+    }
+
+    <div class="card">
+        <table id="cars-table" class="table table-striped table-bordered table-hover table-sm px-3" style="font-size: 0.8rem">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CodeVin)
+                </th>
+                <th>
+                    <div class="d-flex align-items-center gap-1">
+                        @Html.DisplayNameFor(model => model.Marque)
                         @if (User.HasClaim("Admin", "true"))
                         {
-                            <div class="d-flex gap-2 align-items-baseline">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">
-                                    <i class="bi bi-pencil-square" style="color:white;"></i>
-                                </a>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
-                                    <i class="bi bi-trash" style="color:white;"></i>
-                                </button>
-                                <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
-                            </div>
+                            <button type="button" class="button ml-2" data-toggle="modal" data-target="#addMarqueModal">
+                                <i class="bi bi-plus"></i>
+                            </button>
                         }
-                    </td>
-                    <input type="hidden" id="isAdmin" value="@User.HasClaim("Admin", "true")"/>
-                </tr>
+                    </div>
+                </th>
+                <th>
+                    <div class="d-flex align-items-center gap-1">
+                        @Html.DisplayNameFor(model => model.Modele)
+                        @if (User.HasClaim("Admin", "true"))
+                        {
+                            <button type="button" class="button ml-2" data-toggle="modal" data-target="#addModeleModal">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        }
+                    </div>
+                </th>
+                <th>
+                    <div class="d-flex align-items-center gap-1">
+                        @Html.DisplayNameFor(model => model.Finition)
+                        @if (User.HasClaim("Admin", "true"))
+                        {
+                            <button type="button" class="button ml-2" data-toggle="modal" data-target="#addFinitionModal">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        }
+                    </div>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Annee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateAchat)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrixAchat)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CoutReparations)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrixVente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Disponible)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateDisponibilite)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vendu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateVente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reparations)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Voitures.Any())
+            {
+                @foreach (var item in Model.Voitures)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodeVin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Marque)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Modele)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Finition)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Annee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAchat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PrixAchat)€
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CoutReparations)€
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PrixVente)€
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Disponible)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateDisponibilite)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Vendu)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateVente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reparations)
+                        </td>
+                        <td>
+                            @if (User.HasClaim("Admin", "true"))
+                            {
+                                <div class="d-flex gap-2 align-items-baseline">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                                        <i class="bi bi-pencil-square" style="color:white;"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                        <i class="bi bi-trash" style="color:white;"></i>
+                                    </button>
+                                    <form id="deleteForm-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: none;"></form>
+                                </div>
+                            }
+                        </td>
+                        <input type="hidden" id="isAdmin" value="@User.HasClaim("Admin", "true")"/>
+                    </tr>
+                }
             }
-        }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-</div>
+    </div>
+
+</section>
 
 <!-- Modale pour ajouter une marque -->
 <div class="modal fade" id="addMarqueModal" tabindex="-1" role="dialog" aria-labelledby="addMarqueModalLabel" aria-hidden="true">

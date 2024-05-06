@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Express_Voitures.Models;
 using Express_Voitures.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Express_Voitures.Controllers
 {
@@ -42,6 +43,7 @@ namespace Express_Voitures.Controllers
         }
 
         // GET: Marque/Create
+        [Authorize(Policy = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace Express_Voitures.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Nom")] Marque marque)
         {
             if (ModelState.IsValid)
@@ -69,6 +72,7 @@ namespace Express_Voitures.Controllers
         }
 
         // GET: Marque/Edit/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,6 +92,7 @@ namespace Express_Voitures.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nom")] Marque marque)
         {
@@ -120,6 +125,7 @@ namespace Express_Voitures.Controllers
         }
 
         // GET: Marque/Delete/5
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +145,7 @@ namespace Express_Voitures.Controllers
 
         // POST: Marque/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
