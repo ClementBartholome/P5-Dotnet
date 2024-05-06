@@ -372,8 +372,8 @@ td {
         }
     }
 
-    .card-img-top {
-        object-fit: cover !important;
+    .banner .card-img-top {
+        object-fit: contain !important;
     }
 }
 
