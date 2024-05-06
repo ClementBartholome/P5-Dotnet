@@ -208,13 +208,14 @@ h2 {
 .inventaire .card {
     max-width: 100%;
     background-color: white;
+    padding: 1rem;
 }
 
 table.dataTable {
     border-spacing: unset;
     padding: 1rem !important;
     max-width: 1920px;
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
 }
 
 #cars-table_wrapper {
@@ -314,6 +315,10 @@ td {
 
     .row {
         gap: 1rem;
+    }
+    
+    .banner > div {
+        width: 75% !important;
     }
 
     .nav-item {
