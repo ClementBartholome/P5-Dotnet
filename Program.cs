@@ -53,6 +53,22 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+    
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var rootUser = new ApplicationUser { UserName = "admin@expressvoitures.com", Email = "admin@expressvoitures.com", EmailConfirmed = true };
+
+    if (await userManager.FindByNameAsync(rootUser.UserName) == null)
+    {
+        await userManager.CreateAsync(rootUser, "Password123$");
+        await userManager.AddClaimAsync(rootUser, new Claim("Admin", "true"));
+    }
+}
+
 if (app.Environment.IsProduction())
 {
     using var scope = app.Services.CreateScope();
