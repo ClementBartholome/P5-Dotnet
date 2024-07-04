@@ -60,5 +60,16 @@ dotnet run
 
 2. Vous serez redirigé vers la page de connexion. Utilisez les identifiants suivants pour vous connecter :
 
+        - Nom d'utilisateur : admin@expressvoitures.com
+        - Mot de passe : Password123$
+  
+# Express Voitures - Azure
+
+Le projet dispose d'une version déployée sur Azure, disponible ici : https://webapp-240428223131.azurewebsites.net/ 
+
+La connexion administrateur se fait ici : https://webapp-240428223131.azurewebsites.net/admin
+
+Avec les identifiants suivants : 
+
     - Nom d'utilisateur : admin@expressvoitures.com
     - Mot de passe : Password123$
